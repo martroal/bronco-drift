@@ -4,16 +4,15 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] **Migration 001 — `bronco_user_nichos`**: aplicar al SQL Editor de Supabase. SQL listo en `migrations/001_bronco_user_nichos.sql`. Después actualizar tabla "Registro" en [docs/MIGRATIONS.md](./docs/MIGRATIONS.md).
+- [ ] **Extender `research/contadores.md`** con branding del módulo (nombre comercial + color hex + tagline) según el Prompt 1 actualizado.
 
 ## Próximos pasos (en orden)
 
-1. **Extender `research/contadores.md`** con branding del módulo (nombre comercial + color hex + tagline) según el Prompt 1 actualizado.
-2. **Migration 002 — `contadores_clientes`** + **Migration 003 — `contadores_obligaciones`**: del schema aprobado.
-3. **Implementar landing pública `/contadores`**: hero, descripción, CTA "Probalo gratis".
-4. **Implementar app privada `/contadores/app`**: Panel de Vencimientos. Guard de auth + chequeo de suscripción a `bronco_user_nichos`.
-5. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
-6. **Custom domain** (opcional, depende de feedback del primer video).
+1. **Migration 002 — `contadores_clientes`** + **Migration 003 — `contadores_obligaciones`**: del schema aprobado en `research/contadores.md`.
+2. **Implementar landing pública `/contadores`**: hero, descripción, CTA "Probalo gratis".
+3. **Implementar app privada `/contadores/app`**: Panel de Vencimientos. Guard de auth + chequeo de suscripción a `bronco_user_nichos`.
+4. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
+5. **Custom domain** (opcional, depende de feedback del primer video).
 
 ## Diferidos (no urgentes)
 

@@ -12,7 +12,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `docs/LESSONS_LEARNED.md` con 3 lecciones del setup inicial (TS build, npm en Bash, preview_start).
 - `docs/MIGRATIONS.md` con workflow para SQL versionado en `migrations/` aplicado manualmente al SQL Editor de Supabase.
 - `migrations/README.md` apuntando al workflow.
-- `migrations/001_bronco_user_nichos.sql`: tabla de suscripciones de usuarios a módulos (idempotente, RLS activado, índice por user_id).
+- `migrations/001_bronco_user_nichos.sql`: tabla de suscripciones de usuarios a módulos (idempotente, RLS activado, índice por user_id). Aplicada en producción el 2026-05-19.
 
 ### Changed
 - `CLAUDE.md` reescrito para reflejar la arquitectura "producto vivo" aprobada: auth compartida, branding propio por módulo, URLs anidadas (`/`, `/<nicho>`, `/<nicho>/app`).

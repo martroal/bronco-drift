@@ -56,7 +56,7 @@ Por ahora hay un solo entorno (producción Supabase). Cuando se sume staging:
 
 | # | Archivo | Proyecto Supabase | Aplicada | Notas |
 |---|---|---|---|---|
-| — | (ninguna todavía) | `oalmngyxgfomtbzysgym` | — | — |
+| 001 | `001_bronco_user_nichos.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Tabla de suscripciones de usuarios a módulos con RLS activado. |
 
 > Cuando apliques una migración, agregá una fila acá inmediatamente. Si la app rompe después de aplicarla, esta tabla te dice qué revertir.
 
