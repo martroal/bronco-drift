@@ -1,6 +1,14 @@
 # Bronco Drift (codename)
 
-Plataforma multi-tenant. Cada semana se publica un módulo para un nicho distinto (contadores, abogados, nutricionistas, etc.). Los módulos son productos vivos: los usuarios se registran y los usan, no son demos descartables.
+Plataforma multi-tenant donde se publican módulos para nichos distintos (contadores, abogados, nutricionistas, etc.). Los módulos son **productos vivos, no demos**: los usuarios se registran, los usan y dependen de ellos.
+
+## Misión (prioridad estricta, en este orden)
+
+1. **Funcional** — resuelve un problema real end-to-end.
+2. **Hermoso** — genera emoción, no austeridad por default.
+3. **Gratis** — accesible sin barreras.
+
+El contenido de video es **secundario**. Si la app no es buena, ningún edit la salva. **Antes de implementar nada**, leer y aplicar [docs/SELF_CHECK.md](./docs/SELF_CHECK.md). Si el alcance no pasa las 3 preguntas, parar y volver al Prompt 1.
 
 ## Stack fijo (no cambia entre nichos)
 
@@ -54,6 +62,8 @@ Ver [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) para diagramas completos.
 ## PROMPT 1 — INVESTIGACIÓN DE NICHO
 
 **Cuando el usuario diga**: "Investigá el nicho de `<X>`" o equivalente ("Hola Claude, quiero hacer una app para `<X>`, ¿qué podemos hacer que les sirva?").
+
+**Antes de empezar**: leer [docs/SELF_CHECK.md](./docs/SELF_CHECK.md). Cada funcionalidad propuesta tiene que pasar las 3 preguntas (valor real, funcional end-to-end, hermosa). Si la funcionalidad es "versión web de Excel/Notion/papel" sin diferenciador, **descartar**, no proponer.
 
 **Tarea**:
 
@@ -113,6 +123,8 @@ Después de la aprobación, el output final se persiste en `research/<nicho>.md`
 
 **Cuando el usuario diga**: "Arrancá el módulo `<nicho>` según el plan aprobado"
 
+**Antes de tipear código**: releer [docs/SELF_CHECK.md](./docs/SELF_CHECK.md) y verificar que el alcance aprobado pasa las 3 preguntas. Mientras se construye, **no agregar features porque "son fáciles"**. Cada componente visual debe ser deliberado (tipografía, espaciado, color, micro-interacciones). Cada flujo debe funcionar con 200 items, no solo con 5.
+
 **Pre-requisitos** (asumir que ya están listos):
 
 - Repo `bronco-drift` clonado, dev server corriendo (verificable con `preview_start name="bronco-drift"`).
@@ -156,6 +168,7 @@ Después de la aprobación, el output final se persiste en `research/<nicho>.md`
 
 Todo el estado vivo del proyecto está documentado. Antes de empezar una sesión, leer:
 
+- [docs/SELF_CHECK.md](./docs/SELF_CHECK.md) — **lectura obligatoria**. Misión + las 3 preguntas que cada feature debe pasar. Antimensiones. Aprendizaje de Vencet v0.1.
 - [BACKLOG.md](./BACKLOG.md) — qué falta, ordenado por prioridad. Decisiones tomadas y pendientes.
 - [CHANGELOG.md](./CHANGELOG.md) — qué cambió en cada versión, en `[Unreleased]` lo que aún no se publicó.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — stack, estructura, diagrama de DB, decisiones de diseño, restricciones operativas.
@@ -166,7 +179,8 @@ Todo el estado vivo del proyecto está documentado. Antes de empezar una sesión
 
 ## Recordatorios al inicio de cada sesión
 
-1. Leer [BACKLOG.md](./BACKLOG.md) "En curso" para saber dónde quedó el trabajo.
-2. Si se va a tocar schema, leer [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) ANTES de escribir el SQL.
-3. Si se va a hacer commit, actualizar [CHANGELOG.md](./CHANGELOG.md) `[Unreleased]` ANTES.
-4. Si un deploy a Vercel produce un fallo, registrarlo en [docs/DEPLOY_LOG.md](./docs/DEPLOY_LOG.md) y el aprendizaje en [docs/LESSONS_LEARNED.md](./docs/LESSONS_LEARNED.md).
+1. Releer [docs/SELF_CHECK.md](./docs/SELF_CHECK.md) — sin pasar las 3 preguntas, no se implementa.
+2. Leer [BACKLOG.md](./BACKLOG.md) "En curso" para saber dónde quedó el trabajo.
+3. Si se va a tocar schema, leer [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) ANTES de escribir el SQL.
+4. Si se va a hacer commit, actualizar [CHANGELOG.md](./CHANGELOG.md) `[Unreleased]` ANTES.
+5. Si un deploy a Vercel produce un fallo, registrarlo en [docs/DEPLOY_LOG.md](./docs/DEPLOY_LOG.md) y el aprendizaje en [docs/LESSONS_LEARNED.md](./docs/LESSONS_LEARNED.md).

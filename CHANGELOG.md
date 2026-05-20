@@ -47,6 +47,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `PantallaLogin` reescrita: toggle entre "Iniciar sesión" y "Crear cuenta", campo password con mínimo 8 caracteres, confirmación en registro, mensajes de error traducidos a español para casos comunes (credenciales inválidas, email ya registrado, email no confirmado).
 - **Requiere desactivar "Confirm email"** en Supabase Auth Settings (Authentication → Providers → Email) para que el primer registro quede logueado automáticamente sin necesidad de SMTP.
 
+### Added (misión y self-check)
+- **`docs/SELF_CHECK.md`** con la misión reformulada (funcional, hermosa, gratis — el video es secundario) y las 3 preguntas que toda feature debe pasar antes de implementarse (valor real, funcional end-to-end, hermosa). Incluye antimensiones explícitas y el aprendizaje de Vencet v0.1 como caso de estudio.
+- `CLAUDE.md` actualizado para referenciar SELF_CHECK como lectura obligatoria al inicio de cada sesión. Prompts 1 y 2 ahora exigen pasar el self-check antes de proponer alcance o tipear código.
+- `BACKLOG.md` reescrito al rededor de la nueva misión. Vencet pasa de "En curso" a "Diferido / repensar" con nota sobre el aprendizaje. Próximo paso es decidir nicho nuevo aplicando los criterios del self-check.
+
 ### Added (demo data)
 - `demo/contadores-ejemplo.csv` con 10 clientes argentinos y 30 obligaciones distribuidas entre mayo-septiembre 2026. Mezcla de impuestos reales y formatos de fecha (ISO y DD/MM/YYYY) para validar el parser. Distribución de proximidad pensada para que el panel quede colorido al importar (rojos vencidos, amarillos esta semana, verdes a futuro). Ideal para el wow moment del video.
 - `demo/README.md` documentando qué hay en la carpeta y cómo usar cada archivo.
