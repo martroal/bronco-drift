@@ -25,6 +25,20 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 ### Added
 - `migrations/002_contadores_clientes.sql`: tabla de clientes con unique constraint en (user_id, cuit) para habilitar upsert del import CSV. Aplicada en producción el 2026-05-19.
 - `migrations/003_contadores_obligaciones.sql`: tabla de obligaciones con índice compuesto (user_id, proxima_fecha) para el sort del panel. Aplicada en producción el 2026-05-19.
+- **Módulo Vencet (contadores)** en `src/proyectos/contadores/`: módulo completo de Panel de Vencimientos.
+  - `config.ts` con branding Vencet (cyan-500, tagline).
+  - `lib/queries.ts` con 7 helpers: listar pendientes, crear/listar clientes, crear obligación, marcar presentado, import bulk con upsert por CUIT, export todo.
+  - `lib/csv.ts` con parser papaparse (acepta DD/MM/YYYY e ISO), validaciones por fila, template descargable, downloadCSV helper.
+  - `lib/fechas.ts` con parseFlexible, formatAR, diasHasta, urgenciaPorDias.
+  - Componentes: `BadgeProximidad` (verde/amarillo/rojo), `FilaVencimiento`, `Modal` reusable, `ModalNuevoCliente`, `ModalNuevaObligacion`, `ModalImportCSV` con preview y errores por fila.
+  - `Landing.tsx` con hero + 3 features + sección "Cómo funciona".
+  - `App.tsx` con flujo completo: login magic-link → activar suscripción → panel con toolbar (Importar/Exportar/Nuevo cliente/Nueva obligación) y filas con optimistic update al marcar presentado.
+- Helpers compartidos:
+  - `src/lib/auth.ts` con `useUser`, `loginWithMagicLink`, `logout`.
+  - `src/lib/modulos.ts` con `estaSuscripto`, `suscribir` (upsert en `bronco_user_nichos`).
+- Rutas registradas: `/contadores` (landing) y `/contadores/app` (la app, con branding propio fuera del layout de Bronco Drift).
+- Home portfolio actualizado: muestra Vencet con tagline y estado "live".
+- Dependencias nuevas: `papaparse`, `lucide-react`, `@types/papaparse` (dev).
 
 ## [0.0.2] — 2026-05-19
 

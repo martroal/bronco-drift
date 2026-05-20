@@ -1,9 +1,29 @@
 import { Link } from 'react-router-dom';
 import { isSupabaseConfigured } from '@/lib/supabase';
 
-const modulos: { slug: string; nombre: string; estado: 'planeado' | 'en-progreso' | 'live' }[] = [
-  { slug: 'contadores', nombre: 'Contadores', estado: 'planeado' },
+type Modulo = {
+  slug: string;
+  nombre: string;
+  tagline: string;
+  estado: 'planeado' | 'en-progreso' | 'live';
+  href: string;
+};
+
+const modulos: Modulo[] = [
+  {
+    slug: 'contadores',
+    nombre: 'Vencet',
+    tagline: 'Tus vencimientos AFIP, ordenados.',
+    estado: 'live',
+    href: '/contadores',
+  },
 ];
+
+const estadoEstilos: Record<Modulo['estado'], string> = {
+  live: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/40',
+  'en-progreso': 'bg-amber-500/10 text-amber-300 border-amber-500/40',
+  planeado: 'bg-neutral-800 text-neutral-400 border-neutral-700',
+};
 
 export default function Home() {
   return (
@@ -21,11 +41,18 @@ export default function Home() {
           {modulos.map((m) => (
             <li key={m.slug}>
               <Link
-                to={`/proyectos/${m.slug}`}
-                className="flex items-center justify-between border border-neutral-800 rounded-lg px-4 py-3 hover:border-neutral-600 transition-colors"
+                to={m.href}
+                className="flex items-center justify-between gap-4 border border-neutral-800 rounded-lg px-4 py-3 hover:border-neutral-600 transition-colors"
               >
-                <span>{m.nombre}</span>
-                <span className="text-xs text-neutral-500">{m.estado}</span>
+                <div className="min-w-0">
+                  <div className="font-medium">{m.nombre}</div>
+                  <div className="text-xs text-neutral-500 truncate">{m.tagline}</div>
+                </div>
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full border font-mono ${estadoEstilos[m.estado]}`}
+                >
+                  {m.estado}
+                </span>
               </Link>
             </li>
           ))}
