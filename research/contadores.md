@@ -1,6 +1,8 @@
 # Investigación de nicho — Contadores (Argentina / LATAM)
 
-Output del Prompt 1, aprobado el 2026-05-19. Base para construir el módulo `/proyectos/contadores`.
+Output del Prompt 1, aprobado el 2026-05-19. Base para construir el módulo en `/contadores` (landing pública) y `/contadores/app` (app privada).
+
+> **Última revisión**: 2026-05-19. Alcance extendido para incluir Import/Export CSV (decisión: sin esto, ningún contador real va a recargar 100 entradas de su Excel a mano).
 
 ## Puntos de dolor
 
@@ -65,12 +67,62 @@ create index contadores_obligaciones_user_fecha_idx
   on contadores_obligaciones (user_id, proxima_fecha);
 ```
 
+## Import / Export CSV
+
+Carga manual uno por uno es buena para demo, pero ningún contador real va a recargar 100 entradas de su Excel a mano. Por eso el alcance incluye import/export desde el día 1.
+
+### Formato del CSV (5 columnas, denormalizado)
+
+| nombre | cuit | email | impuesto | proxima_fecha |
+|---|---|---|---|---|
+| Estudio Pérez SRL | 30712345678 | perez@gmail.com | IVA mensual | 2026-06-15 |
+| Estudio Pérez SRL | 30712345678 | perez@gmail.com | Ganancias | 2026-09-30 |
+| Juan López | 20223456789 | juan@gmail.com | Monotributo | 2026-06-20 |
+
+Headers en minúscula, sin tildes. Una fila = un vencimiento de un cliente. El cliente se repite por cada obligación (refleja cómo el contador ya piensa en su Excel).
+
+### Mapeo CSV → tablas
+
+```
+Por cada fila del CSV:
+  ┌─ UPSERT contadores_clientes WHERE (user_id, cuit) = (mi_uid, fila.cuit)
+  │    → devuelve cliente_id (existente o recién creado)
+  └─ INSERT contadores_obligaciones
+       (user_id, cliente_id, impuesto, proxima_fecha, estado='pendiente')
+```
+
+Resultado: "Estudio Pérez SRL" se inserta UNA vez en `contadores_clientes`, sus dos obligaciones quedan apuntando al mismo `cliente_id`.
+
+### Validaciones del parser (papaparse)
+
+- `cuit`: 11 dígitos numéricos. Limpia guiones y espacios automáticamente.
+- `proxima_fecha`: acepta `YYYY-MM-DD` (ISO) y `DD/MM/YYYY` (formato argentino).
+- `nombre`, `impuesto`: no vacíos.
+- `email`: opcional. Si está, regex básico.
+
+### UX del flujo
+
+1. Botón **"Descargar template CSV"** → archivo de ejemplo con 2 filas demo.
+2. Botón **"Importar CSV"** → file picker.
+3. Tras parsear: preview de las primeras 5 filas + cantidad total + warnings de validación.
+4. Botón **"Confirmar import"** → procesa y muestra "X clientes creados, Y obligaciones cargadas".
+
+### Export
+
+Botón **"Descargar mis datos"** → CSV idéntico al template, a partir de un JOIN de `contadores_clientes` y `contadores_obligaciones`. Le da al contador confianza ("si la app se cae, tengo mi data") y permite migrar a otra herramienta sin lock-in.
+
+### Dependencia nueva
+
+- `papaparse` (~50KB, MIT). Single-purpose, sin transitivas. Maneja CSV de forma robusta (quotes, escapes, BOM).
+
 ## Alcance del video
 
 **SÍ se muestra**:
 - Login magic-link con Supabase
 - Form para crear cliente (nombre + CUIT)
 - Form para agregar obligación a un cliente (impuesto free-text + fecha)
+- **Import CSV (wow moment)**: subir un archivo precargado con 10 clientes y 30 obligaciones → aparecen todos de golpe en el panel
+- **Export CSV**: botón que descarga la data en un click
 - Lista global de obligaciones ordenada por proximidad con badges de color
 - Botón "marcar presentado" que actualiza estado
 - Deploy a Vercel funcionando con datos demo
@@ -81,7 +133,7 @@ create index contadores_obligaciones_user_fecha_idx
 - Calendario visual tipo Google Calendar
 - Cálculo automático de próxima fecha según calendario AFIP real
 - Multi-usuario dentro del mismo estudio
-- Exportar a PDF/Excel
+- Export a PDF (solo CSV)
 - Historial de obligaciones ya presentadas
 
 ## Fuentes

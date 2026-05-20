@@ -18,6 +18,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `CLAUDE.md` reescrito para reflejar la arquitectura "producto vivo" aprobada: auth compartida, branding propio por módulo, URLs anidadas (`/`, `/<nicho>`, `/<nicho>/app`).
 - Prompt 1 ahora pide branding (nombre comercial + color hex + tagline) además de schema.
 - Prompt 2 ahora crea migrations + landing pública + app privada con guard de auth + chequeo de suscripción, en lugar del placeholder `/proyectos/<slug>`.
+- `research/contadores.md`: alcance extendido para incluir Import / Export CSV. Decisión: sin esto el producto es demo, no usable. Formato CSV documentado (5 columnas, denormalizado), mapeo a las dos tablas con upsert por CUIT, validaciones del parser y dependencia nueva `papaparse`. El "wow moment" del video pasa de la carga manual al bulk import.
 
 ## [0.0.2] — 2026-05-19
 
