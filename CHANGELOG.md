@@ -41,6 +41,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Dependencias nuevas: `papaparse`, `lucide-react`, `@types/papaparse` (dev).
 - `vercel.json` con rewrites a `/index.html` para que las rutas de React Router (ej `/contadores/app`) no devuelvan 404 cuando se cargan directo o se entra por magic link.
 
+### Changed (auth)
+- **Auth pasó de magic-link a email + password**. Razones: el SMTP default de Supabase tiene rate limit que choca durante las pruebas y arruinaría el video; Resend custom requiere dominio verificado y agrega un punto de falla externo; los contadores prefieren password tradicional (similar a AFIP/banking).
+- `src/lib/auth.ts`: nuevas funciones `signIn(email, password)` y `signUp(email, password)` con `supabase.auth.signInWithPassword` y `signUp`. `loginWithMagicLink` se conserva por si en v0.2 se necesita para "olvidé mi password".
+- `PantallaLogin` reescrita: toggle entre "Iniciar sesión" y "Crear cuenta", campo password con mínimo 8 caracteres, confirmación en registro, mensajes de error traducidos a español para casos comunes (credenciales inválidas, email ya registrado, email no confirmado).
+- **Requiere desactivar "Confirm email"** en Supabase Auth Settings (Authentication → Providers → Email) para que el primer registro quede logueado automáticamente sin necesidad de SMTP.
+
 ## [0.0.2] — 2026-05-19
 
 ### Fixed

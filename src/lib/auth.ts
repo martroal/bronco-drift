@@ -32,7 +32,28 @@ export function useUser() {
 }
 
 /**
- * Magic-link login. Devuelve { error } si hubo problema.
+ * Sign in con email + password. Devuelve { error } si las credenciales no son válidas.
+ */
+export async function signIn(email: string, password: string) {
+  if (!supabase) return { error: new Error('Supabase no configurado') };
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  return { error };
+}
+
+/**
+ * Crear cuenta con email + password.
+ * Requiere que "Confirm email" esté desactivado en Supabase Auth Settings
+ * para que el usuario quede logueado automáticamente tras el signUp.
+ */
+export async function signUp(email: string, password: string) {
+  if (!supabase) return { error: new Error('Supabase no configurado') };
+  const { error } = await supabase.auth.signUp({ email, password });
+  return { error };
+}
+
+/**
+ * Magic-link login. No se usa por default (decisión: evitar dependencia de SMTP).
+ * Se conserva para un eventual flow de "olvidé mi password" en v0.2.
  */
 export async function loginWithMagicLink(email: string) {
   if (!supabase) return { error: new Error('Supabase no configurado') };

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Download, LogOut, Mail, Plus, Upload, UserPlus } from 'lucide-react';
+import { Download, LogOut, Plus, Upload, UserPlus } from 'lucide-react';
 import { config } from './config';
-import { useUser, loginWithMagicLink, logout } from '@/lib/auth';
+import { useUser, signIn, signUp, logout } from '@/lib/auth';
 import { estaSuscripto, suscribir } from '@/lib/modulos';
 import {
   exportTodo,
@@ -36,24 +36,51 @@ function PantallaCarga() {
 }
 
 function PantallaLogin() {
+  const [modo, setModo] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('');
-  const [enviado, setEnviado] = useState(false);
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  function cambiarModo(nuevoModo: 'login' | 'register') {
+    setModo(nuevoModo);
+    setError(null);
+    setPassword('');
+    setPasswordConfirm('');
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!email.trim()) return setError('Ingresá tu email.');
+    if (password.length < 8) return setError('La contraseña debe tener al menos 8 caracteres.');
+    if (modo === 'register' && password !== passwordConfirm) {
+      return setError('Las contraseñas no coinciden.');
+    }
+
     setLoading(true);
     setError(null);
-    const { error: err } = await loginWithMagicLink(email.trim());
+    const fn = modo === 'login' ? signIn : signUp;
+    const { error: err } = await fn(email.trim(), password);
     setLoading(false);
+
     if (err) {
-      setError(err.message);
-    } else {
-      setEnviado(true);
+      const msg = err.message ?? String(err);
+      // Traducir mensajes comunes a algo legible para el usuario.
+      if (msg.includes('Invalid login credentials')) {
+        setError('Email o contraseña incorrectos.');
+      } else if (msg.includes('User already registered')) {
+        setError('Ese email ya está registrado. Probá iniciar sesión.');
+      } else if (msg.includes('Email not confirmed')) {
+        setError('Tu cuenta requiere confirmación de email. Avisame para desactivarlo.');
+      } else {
+        setError(msg);
+      }
     }
+    // Si tuvo éxito, useUser detecta la sesión y la app re-renderiza sola.
   }
+
+  const esLogin = modo === 'login';
 
   return (
     <div
@@ -61,45 +88,103 @@ function PantallaLogin() {
       style={{ background: `radial-gradient(ellipse at top, ${config.acentoSoft}, transparent 60%), #0a0a0a` }}
     >
       <div className="max-w-sm w-full">
-        <Link to="/contadores" className="block text-center text-xl font-semibold mb-6" style={{ color: config.acento }}>
+        <Link
+          to="/contadores"
+          className="block text-center text-xl font-semibold mb-6"
+          style={{ color: config.acento }}
+        >
           {config.nombre}
         </Link>
 
-        {enviado ? (
-          <div className="rounded-lg border border-neutral-800 p-6 text-center space-y-2">
-            <Mail size={32} className="mx-auto text-neutral-400" />
-            <p className="text-sm">Revisá tu casilla.</p>
-            <p className="text-xs text-neutral-500">Te enviamos un link para entrar a {config.nombre}.</p>
+        <form onSubmit={submit} className="rounded-lg border border-neutral-800 p-6 space-y-4">
+          <div>
+            <h1 className="text-sm font-semibold mb-1">
+              {esLogin ? `Entrar a ${config.nombre}` : `Crear cuenta en ${config.nombre}`}
+            </h1>
+            <p className="text-xs text-neutral-500">
+              {esLogin
+                ? 'Usá tu email y contraseña.'
+                : 'Tu data va a ser tuya. Sin tarjeta, sin pruebas que vencen.'}
+            </p>
           </div>
-        ) : (
-          <form onSubmit={submit} className="rounded-lg border border-neutral-800 p-6 space-y-4">
-            <div>
-              <h1 className="text-sm font-semibold mb-1">Entrar a {config.nombre}</h1>
-              <p className="text-xs text-neutral-500">Ingresá tu mail, te mandamos un link sin contraseña.</p>
-            </div>
+
+          <div>
+            <label className="block text-xs text-neutral-400 mb-1">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="tu@email.com"
               className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+              autoComplete="email"
               autoFocus
               required
             />
-            {error && <p className="text-xs text-red-400">{error}</p>}
+          </div>
+
+          <div>
+            <label className="block text-xs text-neutral-400 mb-1">
+              Contraseña <span className="text-neutral-600">(mínimo 8 caracteres)</span>
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+              autoComplete={esLogin ? 'current-password' : 'new-password'}
+              required
+              minLength={8}
+            />
+          </div>
+
+          {!esLogin && (
+            <div>
+              <label className="block text-xs text-neutral-400 mb-1">Confirmar contraseña</label>
+              <input
+                type="password"
+                value={passwordConfirm}
+                onChange={(e) => setPasswordConfirm(e.target.value)}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+                autoComplete="new-password"
+                required
+                minLength={8}
+              />
+            </div>
+          )}
+
+          {error && <p className="text-xs text-red-400">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            style={{ backgroundColor: config.acento }}
+            className="w-full px-4 py-2 text-sm font-medium text-white rounded-md hover:opacity-90 disabled:opacity-50 transition-opacity"
+          >
+            {loading
+              ? esLogin
+                ? 'Entrando...'
+                : 'Creando cuenta...'
+              : esLogin
+                ? 'Entrar'
+                : 'Crear cuenta'}
+          </button>
+
+          <p className="text-center text-xs text-neutral-500 pt-2">
+            {esLogin ? '¿No tenés cuenta? ' : '¿Ya tenés cuenta? '}
             <button
-              type="submit"
-              disabled={loading}
-              style={{ backgroundColor: config.acento }}
-              className="w-full px-4 py-2 text-sm font-medium text-white rounded-md hover:opacity-90 disabled:opacity-50 transition-opacity"
+              type="button"
+              onClick={() => cambiarModo(esLogin ? 'register' : 'login')}
+              className="hover:text-neutral-300 underline"
             >
-              {loading ? 'Enviando...' : 'Enviar link de acceso'}
+              {esLogin ? 'Crear una' : 'Iniciar sesión'}
             </button>
-          </form>
-        )}
+          </p>
+        </form>
 
         <p className="text-center text-xs text-neutral-500 mt-4">
-          <Link to="/contadores" className="hover:text-neutral-300">← Volver a la landing</Link>
+          <Link to="/contadores" className="hover:text-neutral-300">
+            ← Volver a la landing
+          </Link>
         </p>
       </div>
     </div>
