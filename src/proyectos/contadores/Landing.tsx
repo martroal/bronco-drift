@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Upload, Download } from 'lucide-react';
 import { config } from './config';
+import AuthMenu from '@/components/AuthMenu';
+import AuthBanner from '@/components/AuthBanner';
 
 export default function Landing() {
   return (
@@ -8,13 +10,17 @@ export default function Landing() {
       className="min-h-screen text-neutral-100"
       style={{ background: `radial-gradient(ellipse at top, ${config.acentoSoft}, transparent 60%), #0a0a0a` }}
     >
-      <header className="border-b border-neutral-800/60 px-6 py-4 flex items-center justify-between">
+      <AuthBanner acento={config.acento} nombreProducto={config.nombre} />
+      <header className="border-b border-neutral-800/60 px-6 py-4 flex items-center justify-between gap-4">
         <span className="text-base font-semibold" style={{ color: config.acento }}>
           {config.nombre}
         </span>
-        <Link to="/" className="text-xs text-neutral-500 hover:text-neutral-300">
-          ← Volver
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/" className="text-xs text-neutral-500 hover:text-neutral-300 hidden sm:inline">
+            ← Volver
+          </Link>
+          <AuthMenu acento={config.acento} nombreProducto={config.nombre} />
+        </div>
       </header>
 
       <main className="max-w-3xl mx-auto px-6 py-16 sm:py-24">

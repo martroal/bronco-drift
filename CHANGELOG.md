@@ -47,6 +47,20 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `PantallaLogin` reescrita: toggle entre "Iniciar sesión" y "Crear cuenta", campo password con mínimo 8 caracteres, confirmación en registro, mensajes de error traducidos a español para casos comunes (credenciales inválidas, email ya registrado, email no confirmado).
 - **Requiere desactivar "Confirm email"** en Supabase Auth Settings (Authentication → Providers → Email) para que el primer registro quede logueado automáticamente sin necesidad de SMTP.
 
+### Changed (UX de auth no bloqueante)
+- **PantallaLogin bloqueante eliminada** del módulo Vencet. La app entera se puede explorar sin estar logueado.
+- Nuevos componentes compartidos en `src/components/`:
+  - `ModalAuth.tsx`: form de login/registro con toggle, reusable por cualquier módulo (recibe acento + nombreProducto).
+  - `AuthMenu.tsx`: header de auth. Sin sesión muestra "Iniciar sesión" + "Crear cuenta"; con sesión muestra email + logout.
+  - `AuthBanner.tsx`: banner persistente arriba que invita a registrarse, dismisible con X y persistido en localStorage.
+- `Layout.tsx` (portfolio) ahora incluye AuthBanner + AuthMenu.
+- `Landing.tsx` (Vencet) ahora incluye AuthBanner + AuthMenu con branding propio.
+- `App.tsx` (Vencet) ahora:
+  - Renderiza el panel siempre, con o sin sesión.
+  - Sin user: empty state que invita a registrarse, los botones de toolbar abren ModalAuth en lugar de modals de creación.
+  - Con user: auto-suscripción en background a `bronco_user_nichos` (sin modal bloqueante), panel normal con queries reales.
+  - Header del módulo usa AuthMenu en lugar del LogOut directo.
+
 ## [0.0.2] — 2026-05-19
 
 ### Fixed
