@@ -23,8 +23,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - **`research/contadores.md` reformateado** al patrón nuevo: 6 funcionalidades posibles + decisión (1+2+3 en v0.1, 4+5+6 diferidas), branding aprobado (Vencet + cyan), schema final, formato CSV, alcance del video, estructura de archivos prevista (~500 LOC).
 
 ### Added
-- `migrations/002_contadores_clientes.sql`: tabla de clientes con unique constraint en (user_id, cuit) para habilitar upsert del import CSV.
-- `migrations/003_contadores_obligaciones.sql`: tabla de obligaciones con índice compuesto (user_id, proxima_fecha) para el sort del panel.
+- `migrations/002_contadores_clientes.sql`: tabla de clientes con unique constraint en (user_id, cuit) para habilitar upsert del import CSV. Aplicada en producción el 2026-05-19.
+- `migrations/003_contadores_obligaciones.sql`: tabla de obligaciones con índice compuesto (user_id, proxima_fecha) para el sort del panel. Aplicada en producción el 2026-05-19.
 
 ## [0.0.2] — 2026-05-19
 

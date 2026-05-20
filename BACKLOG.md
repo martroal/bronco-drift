@@ -4,14 +4,13 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] **Aplicar migrations 002 y 003 en Supabase** (SQL Editor). Después actualizar tabla "Registro" en [docs/MIGRATIONS.md](./docs/MIGRATIONS.md).
+- [ ] **Construir módulo Vencet (`/contadores` + `/contadores/app`)**: ver alcance, stack y estructura en `research/contadores.md`. ~500 LOC, ~60-75 min de build. Funcionalidades v0.1: Panel de Vencimientos + Import CSV + Export CSV.
 
 ## Próximos pasos (en orden)
 
-1. **Construir módulo Vencet (`/contadores` + `/contadores/app`)**: ver alcance, stack y estructura en `research/contadores.md`. ~500 LOC, ~60-75 min de build. Funcionalidades v0.1: Panel de Vencimientos + Import CSV + Export CSV.
-2. **Datos demo precargados**: armar `vencimientos-demo.csv` con 10 clientes y 30 obligaciones para el wow moment del video.
-3. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
-4. **Custom domain** (opcional, depende de feedback del primer video).
+1. **Datos demo precargados**: armar `vencimientos-demo.csv` con 10 clientes y 30 obligaciones para el wow moment del video.
+2. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
+3. **Custom domain** (opcional, depende de feedback del primer video).
 
 ## Diferidos (no urgentes)
 
