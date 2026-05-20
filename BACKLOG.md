@@ -6,13 +6,13 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] **Decidir próximo nicho** con criterios alineados al self-check (valor real, alto potencial visual, audiencia que adopta soft con producto bueno). Después arrancar Prompt 1 con el formato menú de funcionalidades.
+- [ ] **Aplicar migration 004 (Freud / psicólogos)** en Supabase. SQL listo en `migrations/004_psicologos_modulo.sql` con 4 tablas + RLS + indexes full-text.
 
 ## Próximos pasos (en orden)
 
-1. **Documentar bugs del día** en `docs/LESSONS_LEARNED.md` (Supabase Site URL, Vercel SPA rewrites, SMTP rate limit, decisión password sobre magic link).
-2. **Investigar nicho nuevo** validando con un usuario real del nicho antes de cerrar el alcance. Si no hay usuario disponible, postergar.
-3. **Construir módulo nuevo** aplicando el self-check en cada paso.
+1. **Construir módulo Freud (`/freud` + `/freud/app`)** según `research/psicologos.md`. Bitácora estructurada + Timeline por paciente + Pre-sesión recap + búsqueda full-text. Self-check vigente durante todo el build.
+2. **Validar con 3-5 psicólogos reales** el MVP de Freud antes de cualquier push de marketing público.
+3. **Documentar bugs del día** en `docs/LESSONS_LEARNED.md` (Supabase Site URL, Vercel SPA rewrites, SMTP rate limit, decisión password sobre magic link).
 
 ## Diferidos (no urgentes)
 
