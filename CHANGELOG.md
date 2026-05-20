@@ -39,6 +39,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - Rutas registradas: `/contadores` (landing) y `/contadores/app` (la app, con branding propio fuera del layout de Bronco Drift).
 - Home portfolio actualizado: muestra Vencet con tagline y estado "live".
 - Dependencias nuevas: `papaparse`, `lucide-react`, `@types/papaparse` (dev).
+- `vercel.json` con rewrites a `/index.html` para que las rutas de React Router (ej `/contadores/app`) no devuelvan 404 cuando se cargan directo o se entra por magic link.
 
 ## [0.0.2] — 2026-05-19
 
