@@ -4,15 +4,14 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] **Extender `research/contadores.md`** con branding del módulo (nombre comercial + color hex + tagline) según el Prompt 1 actualizado.
+- [ ] **Aplicar migrations 002 y 003 en Supabase** (SQL Editor). Después actualizar tabla "Registro" en [docs/MIGRATIONS.md](./docs/MIGRATIONS.md).
 
 ## Próximos pasos (en orden)
 
-1. **Migration 002 — `contadores_clientes`** + **Migration 003 — `contadores_obligaciones`**: del schema aprobado en `research/contadores.md`.
-2. **Implementar landing pública `/contadores`**: hero, descripción, CTA "Probalo gratis".
-3. **Implementar app privada `/contadores/app`**: Panel de Vencimientos. Guard de auth + chequeo de suscripción a `bronco_user_nichos`.
-4. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
-5. **Custom domain** (opcional, depende de feedback del primer video).
+1. **Construir módulo Vencet (`/contadores` + `/contadores/app`)**: ver alcance, stack y estructura en `research/contadores.md`. ~500 LOC, ~60-75 min de build. Funcionalidades v0.1: Panel de Vencimientos + Import CSV + Export CSV.
+2. **Datos demo precargados**: armar `vencimientos-demo.csv` con 10 clientes y 30 obligaciones para el wow moment del video.
+3. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
+4. **Custom domain** (opcional, depende de feedback del primer video).
 
 ## Diferidos (no urgentes)
 

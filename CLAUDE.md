@@ -53,45 +53,59 @@ Ver [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) para diagramas completos.
 
 ## PROMPT 1 — INVESTIGACIÓN DE NICHO
 
-**Cuando el usuario diga**: "Investigá el nicho de `<X>`"
+**Cuando el usuario diga**: "Investigá el nicho de `<X>`" o equivalente ("Hola Claude, quiero hacer una app para `<X>`, ¿qué podemos hacer que les sirva?").
 
 **Tarea**:
 
-1. Buscar online (WebSearch) los 3 a 5 puntos de dolor más mencionados de profesionales de ese nicho en Argentina / LATAM. Citar fuentes.
+1. Buscar online (WebSearch) los 3 a 5 puntos de dolor más mencionados de profesionales de ese nicho en Argentina / LATAM. Citar fuentes al final.
 2. Listar el software que usan hoy (Excel, planillas, apps locales, SaaS caros) y sus limitaciones concretas.
-3. Identificar UNA feature mínima que:
-   - Resuelva un dolor real de la lista
-   - Se pueda construir en 1 hora con el stack fijo
-   - Sea grabable visualmente (algo que se "vea" funcionar al final)
-4. Proponer **branding del módulo**: nombre comercial corto (no "App de X"), color de acento en hex, tagline de una línea.
-5. Proponer el schema mínimo de Supabase: 2 a 4 tablas con prefijo `<nicho>_`. Incluir RLS y FKs.
-6. Definir el alcance del video: qué SÍ se va a mostrar, qué NO (para no pasarse de 1 hora).
+3. Proponer **4 a 6 funcionalidades posibles** que resuelvan los dolores o reemplacen/mejoren las herramientas digitales actuales. Para cada una:
+   - Qué hace (1 línea)
+   - Qué dolor o herramienta digital resuelve
+   - Esfuerzo de build: S (15-20 min), M (30-45 min), L (60+ min)
+   - Wow factor en video: Alto / Medio / Bajo
+   - Recomendación: incluir en v0.1 / diferir a v0.2 / descartar
+4. Proponer **branding del módulo**: 3 a 4 opciones de nombre comercial (corto, pegadizo, único, NO "App de X") con color de acento en hex y tagline de una línea cada uno.
+5. Proponer **schema mínimo de Supabase** que cubra las funcionalidades recomendadas para v0.1. Tablas con prefijo `<nicho>_`, RLS y FKs.
+6. Dejar la **decisión final al usuario** sobre: qué funcionalidades incluir, qué branding elegir, qué se difiere a v0.2. NO avanzar a construir sin esa aprobación explícita.
 
 **Output esperado** (en este orden, sin relleno):
 
 ```
 NICHO: <X>
+
 PUNTOS DE DOLOR:
   1. ...
-  2. ...
+  (3-5)
+
 SOFTWARE ACTUAL:
   - <herramienta>: <limitación>
-FEATURE PROPUESTA: <nombre interno>
-  - Qué hace: ...
-  - Por qué resuelve un dolor: ...
-  - Qué se ve funcionar al final del video: ...
-BRANDING DEL MÓDULO:
-  - Nombre comercial: <Nombre> (corto, pegadizo, no genérico)
-  - Color de acento: #XXXXXX
-  - Tagline: <una línea>
-SCHEMA SUPABASE:
-  - <nicho>_<tabla>: campos + RLS policy
-ALCANCE VIDEO:
-  - SÍ: ...
-  - NO: ...
+
+FUNCIONALIDADES POSIBLES:
+  1. <Nombre>
+     - Resuelve: dolor #N / reemplaza herramienta Y
+     - Esfuerzo: S | M | L
+     - Wow video: Alto | Medio | Bajo
+     - Recomendación: ✅ v0.1 | ⏸️ v0.2 | ❌ descartar
+  (4-6 items, con justificación de la recomendación)
+
+BRANDING (propuestas, elegí una):
+  - Opción A: <Nombre> | #XXXXXX | "<tagline>"
+  - Opción B: ...
+  (3-4 opciones)
+
+SCHEMA SUPABASE (para v0.1, ajustable según decisión):
+  - <nicho>_<tabla>: campos + RLS + FKs
+
+DECISIÓN PENDIENTE DEL USUARIO:
+  - ¿Qué funcionalidades incluís en v0.1?
+  - ¿Qué branding elegís?
+  - ¿Algo de v0.2 querés mover a v0.1 o viceversa?
 ```
 
-**No avanzar a construir** hasta que yo apruebe explícitamente la feature, el branding y el schema.
+Después de la aprobación, el output final se persiste en `research/<nicho>.md` con las decisiones tomadas + el alcance del video (SÍ/NO) ya cerrado.
+
+**No avanzar al Prompt 2** hasta que el usuario apruebe explícitamente funcionalidades y branding.
 
 ---
 
