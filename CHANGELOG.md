@@ -49,7 +49,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 
 ### Added (Freud, módulo psicólogos)
 - `research/psicologos.md`: investigación completa del nicho con menú de 7 funcionalidades filtrado por self-check. Solo 4 pasan (bitácora estructurada, timeline de evolución, pre-sesión recap, búsqueda full-text). Branding aprobado: **Freud** + `#78350f` marrón cuero + tagline *El cuaderno que recuerda por vos.* Documenta lo que NO se construye (agenda, cobros, AI scribe) y por qué.
-- `migrations/004_psicologos_modulo.sql`: 4 tablas (`psicologos_pacientes`, `psicologos_sesiones`, `psicologos_tags`, `psicologos_sesion_tags`) con RLS, foreign keys con cascade, índice GIN full-text en español sobre los campos textuales de cada sesión.
+- `migrations/004_psicologos_modulo.sql`: 4 tablas (`psicologos_pacientes`, `psicologos_sesiones`, `psicologos_tags`, `psicologos_sesion_tags`) con RLS, foreign keys con cascade, índice GIN full-text en español sobre los campos textuales de cada sesión. Aplicada en producción el 2026-05-19.
 
 ### Changed (shell global)
 - Nuevo **`BroncoShell`** que envuelve TODAS las rutas (portfolio, landings de nichos, apps de nichos). Compone `BroncoHeader` sticky + `AuthBanner` debajo + outlet del módulo.

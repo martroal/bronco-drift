@@ -59,6 +59,7 @@ Por ahora hay un solo entorno (producción Supabase). Cuando se sume staging:
 | 001 | `001_bronco_user_nichos.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Tabla de suscripciones de usuarios a módulos con RLS activado. |
 | 002 | `002_contadores_clientes.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Clientes del contador con unique (user_id, cuit) para upsert del import CSV. |
 | 003 | `003_contadores_obligaciones.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Obligaciones con FK a clientes e índice (user_id, proxima_fecha) para sort del panel. |
+| 004 | `004_psicologos_modulo.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Schema completo del módulo Freud: pacientes, sesiones, tags, sesion_tags. RLS en las 4 tablas + GIN full-text index en español sobre los campos textuales de sesiones. |
 
 > Cuando apliques una migración, agregá una fila acá inmediatamente. Si la app rompe después de aplicarla, esta tabla te dice qué revertir.
 
