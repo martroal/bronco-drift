@@ -106,14 +106,21 @@ ALCANCE VIDEO:
 
 ---
 
-## Decisiones tomadas
+## Documentación del proyecto
 
-- **Supabase**: proyecto nuevo dedicado a Bronco Drift (aislado de Lumina y Optimal).
-- **Video 0**: diferido. La decisión de grabarlo o no se toma más adelante.
+Todo el estado vivo del proyecto está documentado. Antes de empezar una sesión, leer:
 
-## Pendientes (antes de grabar el primer video de nicho)
+- [BACKLOG.md](./BACKLOG.md) — qué falta, ordenado por prioridad. Decisiones tomadas y pendientes.
+- [CHANGELOG.md](./CHANGELOG.md) — qué cambió en cada versión, en `[Unreleased]` lo que aún no se publicó.
+- [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — stack, estructura, diagrama de DB, decisiones de diseño, restricciones operativas.
+- [docs/DEPLOY_LOG.md](./docs/DEPLOY_LOG.md) — registro de deploys a producción, éxitos y fallos.
+- [docs/LESSONS_LEARNED.md](./docs/LESSONS_LEARNED.md) — bugs no-obvios y cómo evitar repetirlos.
+- [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) — workflow para cambios de schema en Supabase.
+- `research/<nicho>.md` — output aprobado del Prompt 1 para cada nicho.
 
-- [ ] Nombre real (reemplazar "Bronco Drift").
-- [ ] Crear proyecto Supabase nuevo + cargar env vars en `.env.local`.
-- [ ] Crear proyecto Vercel + conectar a GitHub + dominio.
-- [ ] Scaffold base local: Vite + React + Tailwind + ruta `/proyectos/[slug]` + auth compartida + manifest PWA.
+## Recordatorios al inicio de cada sesión
+
+1. Leer [BACKLOG.md](./BACKLOG.md) "En curso" para saber dónde quedó el trabajo.
+2. Si se va a tocar schema, leer [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) ANTES de escribir el SQL.
+3. Si se va a hacer commit, actualizar [CHANGELOG.md](./CHANGELOG.md) `[Unreleased]` ANTES.
+4. Si un deploy a Vercel produce un fallo, registrarlo en [docs/DEPLOY_LOG.md](./docs/DEPLOY_LOG.md) y el aprendizaje en [docs/LESSONS_LEARNED.md](./docs/LESSONS_LEARNED.md).
