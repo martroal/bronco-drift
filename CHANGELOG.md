@@ -50,6 +50,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 ### Added (Freud, módulo psicólogos)
 - `research/psicologos.md`: investigación completa del nicho con menú de 7 funcionalidades filtrado por self-check. Solo 4 pasan (bitácora estructurada, timeline de evolución, pre-sesión recap, búsqueda full-text). Branding aprobado: **Freud** + `#78350f` marrón cuero + tagline *El cuaderno que recuerda por vos.* Documenta lo que NO se construye (agenda, cobros, AI scribe) y por qué.
 - `migrations/004_psicologos_modulo.sql`: 4 tablas (`psicologos_pacientes`, `psicologos_sesiones`, `psicologos_tags`, `psicologos_sesion_tags`) con RLS, foreign keys con cascade, índice GIN full-text en español sobre los campos textuales de cada sesión. Aplicada en producción el 2026-05-19.
+- **Módulo Freud (psicólogos) v0.1 implementado** en `src/proyectos/psicologos/`:
+  - `config.ts` con branding Freud (`#78350f` amber-900, tagline, serif Bitter).
+  - `lib/queries.ts`: CRUD pacientes/sesiones/tags + asignación N:M + búsqueda + próximos pacientes.
+  - `lib/recap.ts`: construcción del recap pre-sesión + formato de fechas humano (Hoy, Mañana, "hace 3 días").
+  - Componentes: `TagPill`, `TimelineSesion` (con línea vertical + punto + campos estructurados), `ModalNuevoPaciente`, `ModalSesion` (crear y editar con prompts clínicos + tags toggleables).
+  - Páginas: `Inicio` (saludo según hora + próximos 7 días con recap detallado + acciones rápidas), `Pacientes` (búsqueda en cliente + filtro por estado + cards con motivo y próxima sesión), `PacienteDetalle` (timeline cronológico de sesiones + motivo editable inline + estado selector + borrar con confirmación).
+  - `App.tsx` shell con subheader Freud + nav tabs internas (Inicio · Pacientes) + Routes anidadas `/freud/app/*`.
+  - `Landing.tsx` pública con hero + 3 pilares (notas estructuradas, pre-sesión recap, memoria buscable) + cómo funciona en 3 pasos + footer de privacidad.
+- Rutas registradas en `src/App.tsx`: `/freud` y `/freud/app/*`.
+- Home portfolio sumó Freud como módulo **live** (Vencet sigue pausado).
 
 ### Changed (shell global)
 - Nuevo **`BroncoShell`** que envuelve TODAS las rutas (portfolio, landings de nichos, apps de nichos). Compone `BroncoHeader` sticky + `AuthBanner` debajo + outlet del módulo.

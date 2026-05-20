@@ -11,6 +11,13 @@ type Modulo = {
 
 const modulos: Modulo[] = [
   {
+    slug: 'psicologos',
+    nombre: 'Freud',
+    tagline: 'El cuaderno que recuerda por vos.',
+    estado: 'live',
+    href: '/freud',
+  },
+  {
     slug: 'contadores',
     nombre: 'Vencet',
     tagline: 'Tus vencimientos AFIP, ordenados.',
