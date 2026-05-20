@@ -4,17 +4,16 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] Aprobar arquitectura "producto vivo" (auth compartida, branding por módulo, URLs anidadas). Pendiente OK explícito del usuario antes de empezar el Prompt 2.
+- [ ] **Migration 001 — `bronco_user_nichos`**: aplicar al SQL Editor de Supabase. SQL listo en `migrations/001_bronco_user_nichos.sql`. Después actualizar tabla "Registro" en [docs/MIGRATIONS.md](./docs/MIGRATIONS.md).
 
 ## Próximos pasos (en orden)
 
-1. **Migration 001 — `bronco_user_nichos`**: tabla de suscripciones de usuarios a módulos. Schema definido en `docs/ARCHITECTURE.md`.
-2. **Extender Prompt 1**: el output debe incluir nombre comercial + color de acento + tagline del módulo, no solo schema.
-3. **Migration 002 — `contadores_clientes` y `contadores_obligaciones`**: del schema aprobado en `research/contadores.md`.
-4. **Implementar landing pública `/contadores`**: hero, descripción del producto, CTA "Probalo gratis" → registro.
-5. **Implementar app privada `/contadores/app`**: Panel de Vencimientos según `research/contadores.md`.
-6. **Grabar el primer video**: workflow OBS + CapCut + edición timelapse.
-7. **Custom domain** (opcional, depende de feedback del primer video).
+1. **Extender `research/contadores.md`** con branding del módulo (nombre comercial + color hex + tagline) según el Prompt 1 actualizado.
+2. **Migration 002 — `contadores_clientes`** + **Migration 003 — `contadores_obligaciones`**: del schema aprobado.
+3. **Implementar landing pública `/contadores`**: hero, descripción, CTA "Probalo gratis".
+4. **Implementar app privada `/contadores/app`**: Panel de Vencimientos. Guard de auth + chequeo de suscripción a `bronco_user_nichos`.
+5. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
+6. **Custom domain** (opcional, depende de feedback del primer video).
 
 ## Diferidos (no urgentes)
 
@@ -31,10 +30,7 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 - Supabase: proyecto dedicado `oalmngyxgfomtbzysgym` (aislado de Lumina y Optimal).
 - Repo: [martroal/bronco-drift](https://github.com/martroal/bronco-drift), público.
 - Deploy: [bronco-drift.vercel.app](https://bronco-drift.vercel.app/), auto-deploy desde `main`.
-- Migraciones: SQL versionado en `migrations/`, aplicación manual al SQL Editor de Supabase (ver `docs/MIGRATIONS.md`).
-
-## Decisiones pendientes
-
-- Auth compartida vs aislada por nicho.
-- Branding propio por módulo vs branding único de plataforma.
-- Estructura de URLs: `/` portfolio, `/<nicho>` landing, `/<nicho>/app` la app.
+- Migraciones: SQL versionado en `migrations/`, aplicación manual al SQL Editor de Supabase (ver [docs/MIGRATIONS.md](./docs/MIGRATIONS.md)).
+- **Auth compartida** (1 cuenta global de Bronco Drift). Pertenencia a módulos en tabla `bronco_user_nichos`.
+- **Branding propio por módulo**. Cada módulo define nombre comercial, color de acento y tagline en su `config.ts`.
+- **URLs anidadas en un deploy único**: `/` portfolio, `/<nicho>` landing pública, `/<nicho>/app` app privada.
