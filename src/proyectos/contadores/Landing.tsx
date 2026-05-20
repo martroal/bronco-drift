@@ -1,27 +1,25 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, CheckCircle2, Upload, Download } from 'lucide-react';
 import { config } from './config';
-import AuthMenu from '@/components/AuthMenu';
-import AuthBanner from '@/components/AuthBanner';
 
 export default function Landing() {
   return (
     <div
-      className="min-h-screen text-neutral-100"
-      style={{ background: `radial-gradient(ellipse at top, ${config.acentoSoft}, transparent 60%), #0a0a0a` }}
+      className="flex-1 text-neutral-100"
+      style={{
+        background: `radial-gradient(ellipse at top, ${config.acentoSoft}, transparent 60%), #0a0a0a`,
+      }}
     >
-      <AuthBanner acento={config.acento} nombreProducto={config.nombre} />
-      <header className="border-b border-neutral-800/60 px-6 py-4 flex items-center justify-between gap-4">
+      {/* Subheader propio del módulo Vencet (debajo del header global de Bronco Drift) */}
+      <div
+        className="border-b border-neutral-800/60 px-6 py-3 flex items-center justify-between gap-4"
+        style={{ backgroundColor: config.acentoSoft }}
+      >
         <span className="text-base font-semibold" style={{ color: config.acento }}>
           {config.nombre}
         </span>
-        <div className="flex items-center gap-4">
-          <Link to="/" className="text-xs text-neutral-500 hover:text-neutral-300 hidden sm:inline">
-            ← Volver
-          </Link>
-          <AuthMenu acento={config.acento} nombreProducto={config.nombre} />
-        </div>
-      </header>
+        <span className="text-xs text-neutral-400 hidden sm:inline">{config.tagline}</span>
+      </div>
 
       <main className="max-w-3xl mx-auto px-6 py-16 sm:py-24">
         <section className="text-center mb-16">
@@ -71,7 +69,7 @@ export default function Landing() {
           <ol className="space-y-3 text-sm text-neutral-300">
             <li className="flex gap-3">
               <span className="font-mono text-neutral-500 w-6">1.</span>
-              Te registrás con tu mail (sin password, llega un link).
+              Te registrás con tu email y contraseña.
             </li>
             <li className="flex gap-3">
               <span className="font-mono text-neutral-500 w-6">2.</span>
@@ -83,11 +81,6 @@ export default function Landing() {
             </li>
           </ol>
         </section>
-
-        <footer className="text-center text-xs text-neutral-500">
-          {config.nombre} es parte de Bronco Drift · {' '}
-          <Link to="/" className="hover:text-neutral-300">portfolio</Link>
-        </footer>
       </main>
     </div>
   );

@@ -47,6 +47,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `PantallaLogin` reescrita: toggle entre "Iniciar sesión" y "Crear cuenta", campo password con mínimo 8 caracteres, confirmación en registro, mensajes de error traducidos a español para casos comunes (credenciales inválidas, email ya registrado, email no confirmado).
 - **Requiere desactivar "Confirm email"** en Supabase Auth Settings (Authentication → Providers → Email) para que el primer registro quede logueado automáticamente sin necesidad de SMTP.
 
+### Changed (shell global)
+- Nuevo **`BroncoShell`** que envuelve TODAS las rutas (portfolio, landings de nichos, apps de nichos). Compone `BroncoHeader` sticky + `AuthBanner` debajo + outlet del módulo.
+- Nuevo **`BroncoHeader`**: identifica la plataforma con un header sticky discreto (`bronco-drift` + `AuthMenu`). Único punto de auth de toda la app.
+- `Layout.tsx` (la versión vieja del wrapper de portfolio) eliminado. Su footer global pasó al `Home.tsx` (porque era contenido del portfolio, no de la plataforma).
+- `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
+- Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
+
 ### Added (misión y self-check)
 - **`docs/SELF_CHECK.md`** con la misión reformulada (funcional, hermosa, gratis — el video es secundario) y las 3 preguntas que toda feature debe pasar antes de implementarse (valor real, funcional end-to-end, hermosa). Incluye antimensiones explícitas y el aprendizaje de Vencet v0.1 como caso de estudio.
 - `CLAUDE.md` actualizado para referenciar SELF_CHECK como lectura obligatoria al inicio de cada sesión. Prompts 1 y 2 ahora exigen pasar el self-check antes de proponer alcance o tipear código.

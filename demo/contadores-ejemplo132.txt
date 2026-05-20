@@ -1,0 +1,31 @@
+nombre,cuit,email,impuesto,proxima_fecha
+Estudio Pérez SRL,30712345678,perez@ejemplo.com,IVA mensual,2026-05-22
+Estudio Pérez SRL,30712345678,perez@ejemplo.com,Ganancias,2026-06-15
+Estudio Pérez SRL,30712345678,perez@ejemplo.com,IIBB CABA,2026-05-25
+Estudio Pérez SRL,30712345678,perez@ejemplo.com,F. 931 SICOSS,15/05/2026
+Estudio Pérez SRL,30712345678,perez@ejemplo.com,Bienes Personales,2026-06-30
+Confitería La Esquina,30715423810,laesquina@ejemplo.com,IVA mensual,2026-05-21
+Confitería La Esquina,30715423810,laesquina@ejemplo.com,IIBB CABA,22/05/2026
+Confitería La Esquina,30715423810,laesquina@ejemplo.com,F. 931 SICOSS,2026-06-12
+Confitería La Esquina,30715423810,laesquina@ejemplo.com,Retenciones SICORE,2026-05-30
+Juan López,20223456789,juanlopez@ejemplo.com,Monotributo,20/05/2026
+Juan López,20223456789,juanlopez@ejemplo.com,IIBB CABA,2026-06-17
+Inmobiliaria Centro,30709876543,centro@ejemplo.com,IVA mensual,2026-05-19
+Inmobiliaria Centro,30709876543,centro@ejemplo.com,Ganancias,30/06/2026
+Inmobiliaria Centro,30709876543,centro@ejemplo.com,IIBB Buenos Aires,2026-05-26
+Inmobiliaria Centro,30709876543,centro@ejemplo.com,F. 931 SICOSS,2026-06-10
+María Rodríguez,27334567891,maria.rodriguez@ejemplo.com,Monotributo,20/06/2026
+María Rodríguez,27334567891,maria.rodriguez@ejemplo.com,IIBB CABA,2026-05-23
+Carlos Fernández,20234567890,carlosf@ejemplo.com,Monotributo,2026-05-20
+Carlos Fernández,20234567890,carlosf@ejemplo.com,Autónomos,2026-06-05
+Tech Solutions SA,30717891234,admin@techsolutions.com.ar,IVA mensual,2026-07-22
+Tech Solutions SA,30717891234,admin@techsolutions.com.ar,Ganancias,2026-09-15
+Tech Solutions SA,30717891234,admin@techsolutions.com.ar,F. 931 SICOSS,2026-06-11
+Tech Solutions SA,30717891234,admin@techsolutions.com.ar,IIBB CABA,17/05/2026
+Despensa San José,30713344556,sanjose@ejemplo.com,IVA mensual,2026-06-22
+Despensa San José,30713344556,sanjose@ejemplo.com,IIBB CABA,2026-05-24
+Despensa San José,30713344556,sanjose@ejemplo.com,F. 931 SICOSS,2026-07-13
+Lucía Martínez,27331234567,lucia.m@ejemplo.com,Monotributo,2026-07-20
+Lucía Martínez,27331234567,lucia.m@ejemplo.com,IIBB CABA,2026-05-28
+Constructora Norte SRL,30719988776,admin@constructoranorte.ar,IVA mensual,25/05/2026
+Constructora Norte SRL,30719988776,admin@constructoranorte.ar,F. 931 SICOSS,2026-06-13

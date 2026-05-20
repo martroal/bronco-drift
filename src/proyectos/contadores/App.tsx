@@ -5,8 +5,6 @@ import type { User } from '@supabase/supabase-js';
 import { config } from './config';
 import { useUser } from '@/lib/auth';
 import { suscribir } from '@/lib/modulos';
-import AuthMenu from '@/components/AuthMenu';
-import AuthBanner from '@/components/AuthBanner';
 import ModalAuth from '@/components/ModalAuth';
 import {
   exportTodo,
@@ -35,7 +33,7 @@ export default function VencetApp() {
 
   if (loadingUser) {
     return (
-      <div className="min-h-screen bg-neutral-950 flex items-center justify-center">
+      <div className="flex-1 flex items-center justify-center py-20">
         <div className="text-xs text-neutral-500">Cargando...</div>
       </div>
     );
@@ -120,20 +118,19 @@ function Panel({ user }: { user: User | null }) {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950 text-neutral-100">
-      <AuthBanner acento={config.acento} nombreProducto={config.nombre} />
+    <div className="flex-1 flex flex-col">
+      {/* Subheader propio del módulo Vencet (debajo del header global de Bronco Drift) */}
+      <div
+        className="border-b border-neutral-800/60 px-4 sm:px-6 py-3 flex items-center justify-between gap-4"
+        style={{ backgroundColor: config.acentoSoft }}
+      >
+        <Link to="/contadores" className="text-base font-semibold shrink-0" style={{ color: config.acento }}>
+          {config.nombre}
+        </Link>
+        <span className="text-xs text-neutral-400 hidden sm:inline truncate">{config.tagline}</span>
+      </div>
 
-      <header className="border-b border-neutral-800 px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3 min-w-0">
-          <Link to="/contadores" className="text-base font-semibold shrink-0" style={{ color: config.acento }}>
-            {config.nombre}
-          </Link>
-          <span className="text-xs text-neutral-500 hidden sm:inline truncate">{config.tagline}</span>
-        </div>
-        <AuthMenu acento={config.acento} nombreProducto={config.nombre} />
-      </header>
-
-      <main className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-6">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div>
             <h1 className="text-lg font-semibold">Vencimientos pendientes</h1>
