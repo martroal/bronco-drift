@@ -8,8 +8,8 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## Próximos pasos (en orden)
 
-1. **Datos demo precargados**: armar `vencimientos-demo.csv` con 10 clientes y 30 obligaciones para el wow moment del video.
-2. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse).
+1. **Grabar el primer video** (workflow OBS + CapCut + edición timelapse). Demo CSV listo en `demo/contadores-ejemplo.csv` para el wow moment.
+2. **Documentar bugs del día** en `docs/LESSONS_LEARNED.md` (Supabase Site URL, Vercel SPA rewrites, SMTP rate limit, switch a password auth).
 3. **Custom domain** (opcional, depende de feedback del primer video).
 
 ## Diferidos (no urgentes)

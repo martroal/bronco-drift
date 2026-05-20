@@ -47,6 +47,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `PantallaLogin` reescrita: toggle entre "Iniciar sesión" y "Crear cuenta", campo password con mínimo 8 caracteres, confirmación en registro, mensajes de error traducidos a español para casos comunes (credenciales inválidas, email ya registrado, email no confirmado).
 - **Requiere desactivar "Confirm email"** en Supabase Auth Settings (Authentication → Providers → Email) para que el primer registro quede logueado automáticamente sin necesidad de SMTP.
 
+### Added (demo data)
+- `demo/contadores-ejemplo.csv` con 10 clientes argentinos y 30 obligaciones distribuidas entre mayo-septiembre 2026. Mezcla de impuestos reales y formatos de fecha (ISO y DD/MM/YYYY) para validar el parser. Distribución de proximidad pensada para que el panel quede colorido al importar (rojos vencidos, amarillos esta semana, verdes a futuro). Ideal para el wow moment del video.
+- `demo/README.md` documentando qué hay en la carpeta y cómo usar cada archivo.
+
 ### Changed (UX de auth no bloqueante)
 - **PantallaLogin bloqueante eliminada** del módulo Vencet. La app entera se puede explorar sin estar logueado.
 - Nuevos componentes compartidos en `src/components/`:
