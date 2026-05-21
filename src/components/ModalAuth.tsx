@@ -79,13 +79,14 @@ export default function ModalAuth({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={cerrar}
     >
-      <div
-        className="max-w-sm w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex min-h-full items-center justify-center p-4">
+        <div
+          className="max-w-sm w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl my-auto"
+          onClick={(e) => e.stopPropagation()}
+        >
         <div className="flex items-center justify-between border-b border-neutral-800 px-5 py-3">
           <h2 className="text-sm font-semibold">{titulo}</h2>
           <button
@@ -171,6 +172,7 @@ export default function ModalAuth({
             </button>
           </p>
         </form>
+        </div>
       </div>
     </div>
   );

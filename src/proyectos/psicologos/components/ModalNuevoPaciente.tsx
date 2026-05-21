@@ -52,24 +52,25 @@ export default function ModalNuevoPaciente({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+      className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={onClose}
     >
-      <div
-        className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className="flex items-center justify-between border-b border-neutral-800 px-5 py-3"
-          style={{ backgroundColor: config.acentoSoft }}
+          className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl my-auto"
+          onClick={(e) => e.stopPropagation()}
         >
-          <h2 className="text-sm font-semibold" style={{ fontFamily: config.serif, color: config.acento }}>
-            Nuevo paciente
-          </h2>
-          <button onClick={onClose} className="text-neutral-400 hover:text-white" aria-label="Cerrar">
-            <X size={18} />
-          </button>
-        </div>
+          <div
+            className="flex items-center justify-between border-b border-neutral-800 px-5 py-3"
+            style={{ backgroundColor: config.acentoSoft }}
+          >
+            <h2 className="text-sm font-semibold" style={{ fontFamily: config.serif, color: config.acento }}>
+              Nuevo paciente
+            </h2>
+            <button onClick={onClose} className="text-neutral-400 hover:text-white" aria-label="Cerrar">
+              <X size={18} />
+            </button>
+          </div>
 
         <form onSubmit={submit} className="px-5 py-4 space-y-4">
           <div>
@@ -123,6 +124,7 @@ export default function ModalNuevoPaciente({
             </button>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );
