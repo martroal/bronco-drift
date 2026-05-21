@@ -8,6 +8,7 @@
 export const config = {
   nicho: 'psicologos' as const,
   nombre: 'Freud',
+  audiencia: 'psicólogos',
   tagline: 'El cuaderno que recuerda por vos.',
 
   // Colores

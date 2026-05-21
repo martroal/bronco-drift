@@ -5,6 +5,7 @@
 export const config = {
   nicho: 'contadores' as const,
   nombre: 'Vencet',
+  audiencia: 'contadores',
   tagline: 'Tus vencimientos AFIP, ordenados.',
   acento: '#0ea5e9', // cyan-500
   acentoHover: '#0284c7', // cyan-600

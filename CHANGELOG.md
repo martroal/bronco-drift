@@ -68,6 +68,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Changed (módulos en home muestran audiencia)
+- Cada `config.ts` de módulo sumó campo `audiencia` (plural en minúscula: "psicólogos", "contadores"). La home portfolio en `/` lee los configs directamente (sin hardcodear) y muestra cada módulo como **"Freud · para psicólogos"** con el tagline debajo.
+- Regla durable agregada al Prompt 2 del CLAUDE.md: cada nuevo módulo declara `nombre`, `audiencia`, `tagline`, `acento`, `acentoSoft`, `acentoSoftBorder` en su `config.ts`. El portfolio los descubre automáticamente.
+
 ### Changed (3 reglas durables nuevas, aplicadas a Freud)
 - **Sin landings de bienvenida en módulos**. `Landing.tsx` eliminado en Freud y Contadores. `/freud` y `/contadores` ahora apuntan directo a la app del módulo. La regla queda en `PRODUCT.md` y en el Prompt 2 del `CLAUDE.md` para futuros módulos.
 - **Módulos funcionales sin login con storage local**. Implementado repository híbrido en `src/proyectos/psicologos/lib/queries.ts`: si hay `userId` va a Supabase, si no, a `localStorage` via `queriesLocal.ts`. Los componentes pasan `userId | null` indistintamente. Al loguearse, `lib/migracion.ts` migra automáticamente la data local a Supabase (idempotente, no destructiva si falla). Recarga la página al terminar para que las queries lean desde Supabase.

@@ -134,6 +134,7 @@ Después de la aprobación, el output final se persiste en `research/<nicho>.md`
    - `lib/migracion.ts` migra al primer login (idempotente, no destructiva si falla).
    - Cada operación de query acepta `userId: string | null` en lugar de requerirlo.
 3. **Onboarding inicial obligatorio**. Cada módulo declara `onboarding.tsx` con 3-4 pasos usando el componente compartido `<Onboarding>` (`src/components/Onboarding.tsx`). Se muestra la primera vez que el usuario entra (storage key por módulo, `bronco_<nicho>_onboarding_done`). Es saltable. Incluir al menos: bienvenida, primera acción concreta, segunda acción concreta, mención de privacidad/data.
+4. **`config.ts` del módulo declara su audiencia**. Cada módulo expone en su `config.ts` los campos `nombre` (comercial), `audiencia` (a quién va dirigido, en plural y minúscula: "psicólogos", "contadores", "freelancers"), `tagline`, `acento`, `acentoSoft`, `acentoSoftBorder`, `serif` (opcional). El portfolio en `/` lee estos configs directamente para que el módulo aparezca como "Freud · para psicólogos" sin hardcodear nada.
 
 **Pre-requisitos** (asumir que ya están listos):
 
