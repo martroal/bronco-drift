@@ -68,6 +68,17 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Added (SEO básico + FAQ por módulo)
+- **Meta tags estáticos en `index.html`**: description, Open Graph completo (og:title, og:description, og:image, og:url, og:type, og:site_name, og:locale es_AR), Twitter Cards, canonical, author.
+- **`public/og-image.svg`** 1200×630 con identidad de Bronco Drift: tipografía display itálica, chips de los módulos activos con sus colores, gradientes radiales sutiles cuero+lacre. Es SVG por ahora; queda pendiente convertir a PNG para mejor compat con Twitter/WhatsApp (anotado en BACKLOG).
+- **`public/robots.txt`**: Allow general, Disallow `/contratos/firmar/` (rutas privadas por token), referencia al sitemap.
+- **`public/sitemap.xml`**: 5 URLs principales (home, módulos y sus FAQs) con priority y changefreq.
+- **Hook `src/lib/useMeta.ts`** para overridear meta tags por ruta. Maneja document.title, meta description, og:title/description/image/url y canonical. Restaura los valores anteriores al desmontar la ruta.
+- **`src/components/FAQ.tsx`** componente FAQ accesible con accordion + **JSON-LD structured data (schema.org/FAQPage)** para que Google muestre rich snippets expandibles en los resultados. Tematizable por módulo (cardBackground, hoverOverlay, textPrimary/Secondary/Muted, fontSerif).
+- **`src/proyectos/psicologos/faq.ts`**: 7 preguntas frecuentes de Freud (privacidad, validez legal de historia clínica, exportación, sin cuenta, olvido password, escala, reemplazo de historia clínica formal).
+- **`src/proyectos/contratos/faq.ts`**: 8 preguntas frecuentes de Firma Digital Simple (validez legal Ley 25.506, diferencia firma digital vs electrónica simple, valor probatorio, sin pagar, guardar PDF, link perdido, edición y versiones, multi-parte).
+- **Rutas nuevas**: `/freud/preguntas` (Freud Preguntas) y `/contratos/preguntas` (Sello Preguntas), cada una con `useMeta` aplicado para SEO específico de esa página.
+
 ### Added (cultura blindada en docs para sobrevivir compacts y nuevas sesiones)
 - **`docs/LESSONS_LEARNED.md`** completado con 17+ lecciones agrupadas en 5 secciones: Setup inicial, Deploy y producción, React/CSS/rendering, Supabase RLS y data, Performance y bundle, UX y producto. Cada lección documenta síntoma, causa raíz, solución aplicada y cómo evitarla. Resuelve la tarea pending #15 que arrastraba desde el inicio del proyecto.
 - **`docs/PROCESS.md`** (nuevo) — proceso operativo completo de armar un módulo: las 5 fases (investigación, DB, build, polish, validación), qué hace Claude en cada una, qué hacés vos, checkpoints, antipatrones a evitar. Documenta las 15 reglas durables (hard rules + soft rules) y la lista de "cosas que nunca hacemos". Es el manual de cómo replicar el éxito del flow.

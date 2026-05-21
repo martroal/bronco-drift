@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /contratos/firmar/
+
+Sitemap: https://bronco-drift.vercel.app/sitemap.xml

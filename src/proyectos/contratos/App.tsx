@@ -9,6 +9,7 @@ import Lista from './routes/Lista';
 import Nuevo from './routes/Nuevo';
 import Detalle from './routes/Detalle';
 import Firmar from './routes/Firmar';
+import Preguntas from './routes/Preguntas';
 
 export default function ContratosApp() {
   const { user, loading } = useUser();
@@ -61,6 +62,7 @@ export default function ContratosApp() {
         <Routes>
           <Route index element={<Lista user={user} />} />
           <Route path="nuevo" element={<Nuevo user={user} />} />
+          <Route path="preguntas" element={<Preguntas />} />
           <Route path="firmar/:token" element={<Firmar />} />
           <Route path=":id/editar" element={<Nuevo user={user} />} />
           <Route path=":id" element={<Detalle user={user} />} />

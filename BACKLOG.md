@@ -15,7 +15,8 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 ## Diferidos (no urgentes)
 
 - [ ] **Vencet (contadores) — repensar**: el módulo actual queda como caso de estudio en `src/proyectos/contadores/` (ver `docs/SELF_CHECK.md` para el aprendizaje). Si se retoma, arrancar de cero el Prompt 1 con validación de contador real.
-- [ ] **Lazy loading por ruta** (`<Route lazy={...} />`). **Ahora urgente**: con Firma Digital Simple (html2pdf.js incluido) el bundle saltó a 1.67MB / 486KB gzip. Sin lazy loading, la home tarda mucho más en cargar.
+- [ ] **og-image como PNG 1200×630**: hoy es SVG. SVG funciona para Google y LinkedIn pero NO siempre para Twitter/WhatsApp. Convertir a PNG cuando haya dominio definitivo + branding consolidado.
+- [ ] **og-image dinámica por módulo** (Vercel OG o pre-renderizada): hoy todos los módulos comparten la misma imagen genérica. Cada módulo merece la suya (Freud con cuero + Bitter, Sello con papel + Fraunces, etc.).
 - [ ] **Tests mínimos por módulo** (Vitest + 1 test E2E por feature crítica). Cuando haya 2+ módulos vivos para evitar regresiones cruzadas.
 - [ ] **Privacy policy y términos** (legal argentina + GDPR-lite para Google). Antes del primer usuario real.
 - [ ] **Decidir nombre real** (reemplazar codename "Bronco Drift"). Antes del primer push de marketing.

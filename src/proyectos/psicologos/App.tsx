@@ -10,6 +10,7 @@ import { migrarLocalASupabase } from './lib/migracion';
 import Inicio from './routes/Inicio';
 import Pacientes from './routes/Pacientes';
 import PacienteDetalle from './routes/PacienteDetalle';
+import Preguntas from './routes/Preguntas';
 
 export default function FreudApp() {
   const { user, loading } = useUser();
@@ -66,6 +67,7 @@ export default function FreudApp() {
           <Route index element={<Inicio user={user} />} />
           <Route path="pacientes" element={<Pacientes user={user} />} />
           <Route path="pacientes/:id" element={<PacienteDetalle user={user} />} />
+          <Route path="preguntas" element={<Preguntas />} />
         </Routes>
       </div>
 
