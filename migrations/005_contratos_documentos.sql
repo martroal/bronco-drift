@@ -75,9 +75,12 @@ create policy "public read enviado por token"
 
 -- 3. Anyone puede UPDATE docs en estado 'enviado' (para que la otra parte firme).
 -- El cliente filtra por token; la app solo permite escribir en columnas parte_b_*.
+-- IMPORTANTE: el with check debe permitir 'firmado' porque ese es el estado al
+-- que pasa después del UPDATE. Si solo permitiera 'enviado', el UPDATE fallaría
+-- justo al firmar (lección aprendida 2026-05-19).
 drop policy if exists "public sign por token" on contratos_documentos;
 create policy "public sign por token"
   on contratos_documentos for update
   to anon, authenticated
   using (estado = 'enviado' and link_firma_token is not null)
-  with check (link_firma_token is not null);
+  with check (estado in ('enviado', 'firmado') and link_firma_token is not null);

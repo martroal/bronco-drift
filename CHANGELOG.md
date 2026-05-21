@@ -68,6 +68,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Fixed (RLS policy bloqueaba la firma de la otra parte)
+- La policy `public sign por token` en `contratos_documentos` tenía `with check (link_firma_token is not null)` pero faltaba permitir explícitamente `estado in ('enviado', 'firmado')`. Como el UPDATE de firma cambia el estado a `'firmado'`, Postgres rechazaba la fila resultante con `new row violates row-level security policy`. Fix: ampliar el `with check` para que acepte ambos estados. Aplicar el ALTER en producción manualmente.
+
 ### Added (Módulo Firma Digital Simple — para freelancers y pymes)
 - **Nuevo módulo `/contratos`** con estilo deliberadamente distinto: **light mode local** (papel cremoso `#fdfaf3`), serif display **Fraunces** (Google Fonts) con personalidad editorial, paleta acento lacre cera `#7c2d12` (orange-900). Visualmente NADA en común con Freud (dark + cuero + Bitter) ni con la plataforma. Cuando entrás se siente otro lugar.
 - `research/contratos.md` con investigación, marco legal Ley 25.506, gap real en LATAM, funcionalidades aprobadas, branding aprobado.
