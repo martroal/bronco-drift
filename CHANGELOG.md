@@ -68,6 +68,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Changed (3 reglas durables nuevas, aplicadas a Freud)
+- **Sin landings de bienvenida en módulos**. `Landing.tsx` eliminado en Freud y Contadores. `/freud` y `/contadores` ahora apuntan directo a la app del módulo. La regla queda en `PRODUCT.md` y en el Prompt 2 del `CLAUDE.md` para futuros módulos.
+- **Módulos funcionales sin login con storage local**. Implementado repository híbrido en `src/proyectos/psicologos/lib/queries.ts`: si hay `userId` va a Supabase, si no, a `localStorage` via `queriesLocal.ts`. Los componentes pasan `userId | null` indistintamente. Al loguearse, `lib/migracion.ts` migra automáticamente la data local a Supabase (idempotente, no destructiva si falla). Recarga la página al terminar para que las queries lean desde Supabase.
+- **Onboarding obligatorio por módulo**. Nuevo componente compartido `src/components/Onboarding.tsx` con stepper de 3-4 pasos, dots, botones Saltar/Atrás/Siguiente, persistido en `localStorage`. Freud declara sus pasos en `src/proyectos/psicologos/onboarding.tsx` (BookOpen → Bienvenido, UserPlus → Cargá tu primer paciente, NotebookPen → Anotá cada sesión en 5 prompts, Shield → Tu data en tu navegador).
+- Rutas internas del módulo Freud: pasaron de `/freud/app/...` a `/freud/...`. Todos los Links actualizados.
+
 ### Fixed (modales atrapados detrás del subheader)
 - Los modales rendereados desde `AuthMenu` (dentro del `BroncoHeader` que tiene `backdrop-blur-md`) quedaban atrapados en el stacking context del header y eran tapados por el subheader del módulo y el contenido. **Root cause**: `backdrop-filter` crea un nuevo stacking context, por lo que `z-50` del modal era relativo a ese contexto, no al viewport.
 - Solución: usar `React Portal` (`createPortal(jsx, document.body)`) en los 4 modales del proyecto para que el overlay se monte como hijo directo de `body` y escape de cualquier stacking context. Aplicado a `ModalAuth`, `Modal` genérico de contadores, `ModalNuevoPaciente` y `ModalSesion` de Freud.

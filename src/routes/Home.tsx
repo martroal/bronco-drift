@@ -26,6 +26,9 @@ const modulos: Modulo[] = [
   },
 ];
 
+// Lista de slugs en pausa. La home no rutea a estos por ahora (Vencet quedó como
+// caso de estudio del self-check, ver docs/SELF_CHECK.md).
+
 const estadoEstilos: Record<Modulo['estado'], string> = {
   live: 'bg-emerald-500/10 text-emerald-300 border-emerald-500/40',
   'en-progreso': 'bg-amber-500/10 text-amber-300 border-amber-500/40',

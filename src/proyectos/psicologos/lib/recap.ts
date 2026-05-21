@@ -1,53 +1,8 @@
-import type { Paciente } from './queries';
-import { ultimasSesionesDePaciente } from './queries';
-
 /**
- * Construye un mini-resumen del paciente para mostrar antes de la próxima sesión.
- * Toma las últimas 3 sesiones y arma un texto compacto con:
- * - Tema central recurrente o más reciente
- * - Tarea propuesta pendiente
- * - Plan que el psicólogo había anotado para la próxima
- *
- * Devuelve null si el paciente no tiene sesiones previas.
+ * Utilidades de fechas y formato del módulo Freud.
+ * El armado del recap por paciente vive inline en Inicio.tsx para no
+ * acoplar el formato visual a esta capa lib.
  */
-export type Recap = {
-  pacienteId: string;
-  pacienteNombre: string;
-  proximaSesion: string | null; // ISO timestamp
-  ultimaFecha: string | null;
-  temaUltima: string | null;
-  tareaPendiente: string | null;
-  planProxima: string | null;
-  cantidadSesiones: number;
-};
-
-export async function construirRecap(paciente: Paciente): Promise<Recap | null> {
-  const sesiones = await ultimasSesionesDePaciente(paciente.id, 3);
-  if (sesiones.length === 0) {
-    return {
-      pacienteId: paciente.id,
-      pacienteNombre: paciente.nombre,
-      proximaSesion: paciente.proxima_sesion,
-      ultimaFecha: null,
-      temaUltima: null,
-      tareaPendiente: null,
-      planProxima: null,
-      cantidadSesiones: 0,
-    };
-  }
-
-  const ultima = sesiones[0];
-  return {
-    pacienteId: paciente.id,
-    pacienteNombre: paciente.nombre,
-    proximaSesion: paciente.proxima_sesion,
-    ultimaFecha: ultima.fecha,
-    temaUltima: ultima.tema_central,
-    tareaPendiente: ultima.tarea_propuesta,
-    planProxima: ultima.plan_proxima,
-    cantidadSesiones: sesiones.length,
-  };
-}
 
 /**
  * Formatea una fecha ISO al estilo argentino. Ejemplo: "Hoy 18:00", "Mañana 09:30", "Vie 22/05 10:00".
@@ -103,7 +58,6 @@ export function formatearPasado(iso: string | null): string {
 
 /**
  * Formatea una fecha (ISO YYYY-MM-DD) al estilo "mié 22 may".
- * Para mostrar en timelines y listas.
  */
 export function formatearFecha(iso: string): string {
   const date = new Date(iso);

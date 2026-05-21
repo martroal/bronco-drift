@@ -17,7 +17,7 @@ import { toISODate } from '../lib/recap';
 type Props = {
   open: boolean;
   onClose: () => void;
-  userId: string;
+  userId: string | null;
   pacienteId: string;
   sesionExistente?: SesionConTags | null;
   onSaved: () => void;
@@ -62,6 +62,8 @@ export default function ModalSesion({
       .then(setTagsDisponibles)
       .catch((err) => setError(err.message));
   }, [open, userId]);
+
+  // userId puede ser null (modo localStorage). Las queries lo soportan.
 
   // Cargar valores de la sesión existente.
   useEffect(() => {
@@ -111,7 +113,7 @@ export default function ModalSesion({
           notas_libres: payload.notas_libres,
           plan_proxima: payload.plan_proxima,
         };
-        await actualizarSesion(sesionExistente.id, parche, tagIds);
+        await actualizarSesion(userId, sesionExistente.id, parche, tagIds);
       } else {
         await crearSesion(userId, { ...payload, tagIds });
       }
@@ -129,7 +131,7 @@ export default function ModalSesion({
     setLoading(true);
     setError(null);
     try {
-      await eliminarSesion(sesionExistente.id);
+      await eliminarSesion(userId, sesionExistente.id);
       onDeleted?.();
       onClose();
     } catch (err) {

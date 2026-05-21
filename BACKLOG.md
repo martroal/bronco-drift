@@ -6,7 +6,7 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 
 ## En curso
 
-- [ ] **Construir módulo Freud (`/freud` + `/freud/app`)** según `research/psicologos.md`. Bitácora estructurada + Timeline por paciente + Pre-sesión recap + búsqueda full-text. Self-check vigente durante todo el build.
+- [ ] **Validar Freud con 3-5 psicólogos reales**. Mostrar el módulo en producción (`bronco-drift.vercel.app/freud`), pedir feedback sobre el flujo de bitácora + recap + timeline. Recién después de validación, push de marketing.
 
 ## Próximos pasos (en orden)
 2. **Validar con 3-5 psicólogos reales** el MVP de Freud antes de cualquier push de marketing público.

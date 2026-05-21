@@ -125,6 +125,16 @@ Después de la aprobación, el output final se persiste en `research/<nicho>.md`
 
 **Antes de tipear código**: releer [docs/SELF_CHECK.md](./docs/SELF_CHECK.md) y verificar que el alcance aprobado pasa las 3 preguntas. Mientras se construye, **no agregar features porque "son fáciles"**. Cada componente visual debe ser deliberado (tipografía, espaciado, color, micro-interacciones). Cada flujo debe funcionar con 200 items, no solo con 5.
 
+**Reglas no negociables para todo módulo nuevo** (establecidas el 2026-05-19):
+
+1. **Sin landing de bienvenida**. La ruta `/<nicho>` lleva directamente a la app. NO se construye una landing previa con hero + features + CTA. Si el módulo necesita "vender" algo, lo hace dentro de la propia app (banner, empty state, onboarding).
+2. **Funcional sin login**. El módulo debe poder usarse end-to-end SIN sesión iniciada, persistiendo en `localStorage`. Cuando el usuario se loguea, los datos locales se migran automáticamente a Supabase. Patrón implementado en Freud:
+   - `lib/queries.ts` es un repository híbrido que delega a `queriesLocal.ts` o Supabase según `userId | null`.
+   - `lib/queriesLocal.ts` implementa la misma API contra `localStorage`.
+   - `lib/migracion.ts` migra al primer login (idempotente, no destructiva si falla).
+   - Cada operación de query acepta `userId: string | null` en lugar de requerirlo.
+3. **Onboarding inicial obligatorio**. Cada módulo declara `onboarding.tsx` con 3-4 pasos usando el componente compartido `<Onboarding>` (`src/components/Onboarding.tsx`). Se muestra la primera vez que el usuario entra (storage key por módulo, `bronco_<nicho>_onboarding_done`). Es saltable. Incluir al menos: bienvenida, primera acción concreta, segunda acción concreta, mención de privacidad/data.
+
 **Pre-requisitos** (asumir que ya están listos):
 
 - Repo `bronco-drift` clonado, dev server corriendo (verificable con `preview_start name="bronco-drift"`).

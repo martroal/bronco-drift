@@ -12,7 +12,7 @@ export default function ModalNuevoPaciente({
 }: {
   open: boolean;
   onClose: () => void;
-  userId: string;
+  userId: string | null;
   onCreated: (pacienteId: string) => void;
 }) {
   const [nombre, setNombre] = useState('');

@@ -1,51 +1,26 @@
 import { supabase } from '@/lib/supabase';
+import type {
+  Paciente,
+  Sesion,
+  SesionConPaciente,
+  SesionConTags,
+  Tag,
+} from './types';
+import * as local from './queriesLocal';
 
-/* ============================================================
- * Tipos
- * ============================================================ */
+/**
+ * Repository híbrido del módulo Freud.
+ *
+ * - Si `userId` viene como string: usa Supabase (data persiste cross-device).
+ * - Si `userId` viene como null: usa localStorage (data solo en este navegador).
+ *
+ * La firma de cada función acepta `userId: string | null`. Los componentes pasan
+ * `user?.id ?? null` sin importarles dónde se persiste. Cuando el usuario se
+ * loguea, `lib/migracion.ts` migra la data de localStorage a Supabase.
+ */
 
-export type EstadoPaciente = 'activo' | 'pausa' | 'alta';
-
-export type Paciente = {
-  id: string;
-  user_id: string;
-  nombre: string;
-  fecha_nacimiento: string | null;
-  primera_sesion: string | null;
-  motivo_consulta: string | null;
-  estado: EstadoPaciente;
-  proxima_sesion: string | null;
-  created_at: string;
-};
-
-export type Sesion = {
-  id: string;
-  user_id: string;
-  paciente_id: string;
-  fecha: string;
-  tema_central: string | null;
-  tarea_propuesta: string | null;
-  estado_emocional: string | null;
-  notas_libres: string | null;
-  plan_proxima: string | null;
-  created_at: string;
-};
-
-export type Tag = {
-  id: string;
-  user_id: string;
-  nombre: string;
-  color: string;
-  created_at: string;
-};
-
-export type SesionConPaciente = Sesion & {
-  paciente: Pick<Paciente, 'id' | 'nombre' | 'estado'>;
-};
-
-export type SesionConTags = Sesion & {
-  tags: Tag[];
-};
+// Re-export types for convenience
+export type { Paciente, Sesion, SesionConTags, SesionConPaciente, Tag, EstadoPaciente } from './types';
 
 function sb() {
   if (!supabase) throw new Error('Supabase no configurado');
@@ -56,7 +31,8 @@ function sb() {
  * Pacientes
  * ============================================================ */
 
-export async function listarPacientes(userId: string): Promise<Paciente[]> {
+export async function listarPacientes(userId: string | null): Promise<Paciente[]> {
+  if (!userId) return local.listarPacientes();
   const { data, error } = await sb()
     .from('psicologos_pacientes')
     .select('*')
@@ -66,7 +42,11 @@ export async function listarPacientes(userId: string): Promise<Paciente[]> {
   return (data ?? []) as Paciente[];
 }
 
-export async function obtenerPaciente(id: string): Promise<Paciente | null> {
+export async function obtenerPaciente(
+  userId: string | null,
+  id: string,
+): Promise<Paciente | null> {
+  if (!userId) return local.obtenerPaciente(id);
   const { data, error } = await sb()
     .from('psicologos_pacientes')
     .select('*')
@@ -77,9 +57,10 @@ export async function obtenerPaciente(id: string): Promise<Paciente | null> {
 }
 
 export async function crearPaciente(
-  userId: string,
+  userId: string | null,
   payload: Pick<Paciente, 'nombre' | 'motivo_consulta' | 'primera_sesion'>,
 ): Promise<Paciente> {
+  if (!userId) return local.crearPaciente(payload);
   const { data, error } = await sb()
     .from('psicologos_pacientes')
     .insert({
@@ -96,9 +77,11 @@ export async function crearPaciente(
 }
 
 export async function actualizarPaciente(
+  userId: string | null,
   id: string,
   parche: Partial<Pick<Paciente, 'nombre' | 'motivo_consulta' | 'estado' | 'proxima_sesion' | 'primera_sesion'>>,
 ): Promise<Paciente> {
+  if (!userId) return local.actualizarPaciente(id, parche);
   const { data, error } = await sb()
     .from('psicologos_pacientes')
     .update(parche)
@@ -109,7 +92,11 @@ export async function actualizarPaciente(
   return data as Paciente;
 }
 
-export async function eliminarPaciente(id: string): Promise<void> {
+export async function eliminarPaciente(
+  userId: string | null,
+  id: string,
+): Promise<void> {
+  if (!userId) return local.eliminarPaciente(id);
   const { error } = await sb().from('psicologos_pacientes').delete().eq('id', id);
   if (error) throw error;
 }
@@ -118,7 +105,11 @@ export async function eliminarPaciente(id: string): Promise<void> {
  * Sesiones
  * ============================================================ */
 
-export async function listarSesionesDePaciente(pacienteId: string): Promise<SesionConTags[]> {
+export async function listarSesionesDePaciente(
+  userId: string | null,
+  pacienteId: string,
+): Promise<SesionConTags[]> {
+  if (!userId) return local.listarSesionesDePaciente(pacienteId);
   const { data, error } = await sb()
     .from('psicologos_sesiones')
     .select(`
@@ -136,7 +127,12 @@ export async function listarSesionesDePaciente(pacienteId: string): Promise<Sesi
   })) as SesionConTags[];
 }
 
-export async function ultimasSesionesDePaciente(pacienteId: string, limit = 3): Promise<Sesion[]> {
+export async function ultimasSesionesDePaciente(
+  userId: string | null,
+  pacienteId: string,
+  limit = 3,
+): Promise<Sesion[]> {
+  if (!userId) return local.ultimasSesionesDePaciente(pacienteId, limit);
   const { data, error } = await sb()
     .from('psicologos_sesiones')
     .select('*')
@@ -148,7 +144,7 @@ export async function ultimasSesionesDePaciente(pacienteId: string, limit = 3): 
 }
 
 export async function crearSesion(
-  userId: string,
+  userId: string | null,
   payload: {
     paciente_id: string;
     fecha: string;
@@ -160,6 +156,8 @@ export async function crearSesion(
     tagIds?: string[];
   },
 ): Promise<Sesion> {
+  if (!userId) return local.crearSesion(payload);
+
   const { tagIds, ...rest } = payload;
   const { data, error } = await sb()
     .from('psicologos_sesiones')
@@ -179,17 +177,19 @@ export async function crearSesion(
   const sesion = data as Sesion;
 
   if (tagIds && tagIds.length > 0) {
-    await asignarTagsASesion(sesion.id, tagIds);
+    await asignarTagsASesion(userId, sesion.id, tagIds);
   }
 
   return sesion;
 }
 
 export async function actualizarSesion(
+  userId: string | null,
   id: string,
   parche: Partial<Pick<Sesion, 'tema_central' | 'tarea_propuesta' | 'estado_emocional' | 'notas_libres' | 'plan_proxima' | 'fecha'>>,
   tagIds?: string[],
 ): Promise<Sesion> {
+  if (!userId) return local.actualizarSesion(id, parche, tagIds);
   const { data, error } = await sb()
     .from('psicologos_sesiones')
     .update(parche)
@@ -199,15 +199,18 @@ export async function actualizarSesion(
   if (error) throw error;
 
   if (tagIds !== undefined) {
-    // Reemplazar tags completamente.
     await sb().from('psicologos_sesion_tags').delete().eq('sesion_id', id);
-    if (tagIds.length > 0) await asignarTagsASesion(id, tagIds);
+    if (tagIds.length > 0) await asignarTagsASesion(userId, id, tagIds);
   }
 
   return data as Sesion;
 }
 
-export async function eliminarSesion(id: string): Promise<void> {
+export async function eliminarSesion(
+  userId: string | null,
+  id: string,
+): Promise<void> {
+  if (!userId) return local.eliminarSesion(id);
   const { error } = await sb().from('psicologos_sesiones').delete().eq('id', id);
   if (error) throw error;
 }
@@ -216,7 +219,8 @@ export async function eliminarSesion(id: string): Promise<void> {
  * Tags
  * ============================================================ */
 
-export async function listarTags(userId: string): Promise<Tag[]> {
+export async function listarTags(userId: string | null): Promise<Tag[]> {
+  if (!userId) return local.listarTags();
   const { data, error } = await sb()
     .from('psicologos_tags')
     .select('*')
@@ -227,10 +231,11 @@ export async function listarTags(userId: string): Promise<Tag[]> {
 }
 
 export async function crearTag(
-  userId: string,
+  userId: string | null,
   nombre: string,
-  color: string = '#78350f',
+  color = '#a16207',
 ): Promise<Tag> {
+  if (!userId) return local.crearTag(nombre, color);
   const { data, error } = await sb()
     .from('psicologos_tags')
     .upsert(
@@ -243,7 +248,12 @@ export async function crearTag(
   return data as Tag;
 }
 
-export async function asignarTagsASesion(sesionId: string, tagIds: string[]): Promise<void> {
+export async function asignarTagsASesion(
+  userId: string | null,
+  sesionId: string,
+  tagIds: string[],
+): Promise<void> {
+  if (!userId) return local.asignarTagsASesion(sesionId, tagIds);
   if (tagIds.length === 0) return;
   const rows = tagIds.map((tag_id) => ({ sesion_id: sesionId, tag_id }));
   const { error } = await sb()
@@ -253,14 +263,17 @@ export async function asignarTagsASesion(sesionId: string, tagIds: string[]): Pr
 }
 
 /* ============================================================
- * Búsqueda full-text
+ * Búsqueda + próximos
  * ============================================================ */
 
-export async function buscarSesiones(userId: string, q: string): Promise<SesionConPaciente[]> {
+export async function buscarSesiones(
+  userId: string | null,
+  q: string,
+): Promise<SesionConPaciente[]> {
+  if (!userId) return local.buscarSesiones(q);
   const termino = q.trim();
   if (!termino) return [];
 
-  // Postgres `websearch_to_tsquery` permite query estilo Google.
   const { data, error } = await sb()
     .from('psicologos_sesiones')
     .select(`
@@ -284,11 +297,11 @@ export async function buscarSesiones(userId: string, q: string): Promise<SesionC
   return (data ?? []) as unknown as SesionConPaciente[];
 }
 
-/* ============================================================
- * Próximos turnos (deriva del campo proxima_sesion de pacientes)
- * ============================================================ */
-
-export async function proximosPacientes(userId: string, dentroDeDias = 7): Promise<Paciente[]> {
+export async function proximosPacientes(
+  userId: string | null,
+  dentroDeDias = 7,
+): Promise<Paciente[]> {
+  if (!userId) return local.proximosPacientes(dentroDeDias);
   const ahora = new Date();
   const limite = new Date();
   limite.setDate(ahora.getDate() + dentroDeDias);

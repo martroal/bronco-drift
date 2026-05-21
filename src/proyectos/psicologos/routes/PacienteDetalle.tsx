@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Plus, Trash2, UserPlus } from 'lucide-react';
+import { ArrowLeft, Calendar, Plus, Trash2 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
 import {
   actualizarPaciente,
@@ -14,7 +14,6 @@ import {
 import { config } from '../config';
 import TimelineSesion from '../components/TimelineSesion';
 import ModalSesion from '../components/ModalSesion';
-import ModalAuth from '@/components/ModalAuth';
 
 export default function PacienteDetalle({ user }: { user: User | null }) {
   const { id } = useParams<{ id: string }>();
@@ -29,17 +28,19 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
   const [confirmarBorrar, setConfirmarBorrar] = useState(false);
   const [editandoMotivo, setEditandoMotivo] = useState(false);
   const [motivoTexto, setMotivoTexto] = useState('');
-  const [modalAuth, setModalAuth] = useState(false);
 
   const cargar = useCallback(async () => {
-    if (!id || !userId) {
+    if (!id) {
       setLoading(false);
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      const [p, ss] = await Promise.all([obtenerPaciente(id), listarSesionesDePaciente(id)]);
+      const [p, ss] = await Promise.all([
+        obtenerPaciente(userId, id),
+        listarSesionesDePaciente(userId, id),
+      ]);
       setPaciente(p);
       setMotivoTexto(p?.motivo_consulta ?? '');
       setSesiones(ss);
@@ -57,7 +58,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
   async function cambiarEstado(estado: EstadoPaciente) {
     if (!paciente) return;
     try {
-      const actualizado = await actualizarPaciente(paciente.id, { estado });
+      const actualizado = await actualizarPaciente(userId, paciente.id, { estado });
       setPaciente(actualizado);
     } catch (err) {
       setError((err as Error).message);
@@ -67,7 +68,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
   async function guardarMotivo() {
     if (!paciente) return;
     try {
-      const actualizado = await actualizarPaciente(paciente.id, {
+      const actualizado = await actualizarPaciente(userId, paciente.id, {
         motivo_consulta: motivoTexto.trim() || null,
       });
       setPaciente(actualizado);
@@ -80,8 +81,8 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
   async function borrarPaciente() {
     if (!paciente) return;
     try {
-      await eliminarPaciente(paciente.id);
-      navigate('/freud/app/pacientes');
+      await eliminarPaciente(userId, paciente.id);
+      navigate('/freud/pacientes');
     } catch (err) {
       setError((err as Error).message);
     }
@@ -97,42 +98,6 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
     setModalSesionAbierto(true);
   }
 
-  if (!userId) {
-    return (
-      <div className="max-w-2xl mx-auto px-6 py-16">
-        <Link
-          to="/freud/app/pacientes"
-          className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-300 mb-8"
-        >
-          <ArrowLeft size={12} />
-          Pacientes
-        </Link>
-        <div className="rounded-xl border border-dashed border-stone-800 p-10 text-center">
-          <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
-            Necesitás una cuenta para ver esto.
-          </p>
-          <p className="text-sm text-neutral-500 mb-5 max-w-md mx-auto">
-            Cada psicólogo solo ve sus propios pacientes. Creá tu cuenta gratis y empezá a cargar el tuyo.
-          </p>
-          <button
-            onClick={() => setModalAuth(true)}
-            style={{ backgroundColor: config.acento }}
-            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
-          >
-            <UserPlus size={14} />
-            Crear cuenta gratis
-          </button>
-        </div>
-        <ModalAuth
-          open={modalAuth}
-          onClose={() => setModalAuth(false)}
-          acento={config.acento}
-          nombreProducto={config.nombre}
-        />
-      </div>
-    );
-  }
-
   if (loading) {
     return <div className="text-center text-xs text-neutral-500 py-20">Cargando paciente...</div>;
   }
@@ -141,7 +106,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16 text-center">
         <p className="text-sm text-neutral-400 mb-4">No encontré ese paciente.</p>
-        <Link to="/freud/app/pacientes" className="text-xs underline" style={{ color: config.acento }}>
+        <Link to="/freud/pacientes" className="text-xs underline" style={{ color: config.acento }}>
           ← Volver a la lista
         </Link>
       </div>
@@ -151,7 +116,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
       <Link
-        to="/freud/app/pacientes"
+        to="/freud/pacientes"
         className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-300 mb-6"
       >
         <ArrowLeft size={12} />

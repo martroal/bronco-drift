@@ -96,8 +96,11 @@ Reglas no-negociables del proyecto, ya documentadas en `docs/SELF_CHECK.md`. Res
 2. **MVP minimalista pero no MVP feo**. Un MVP feo es un MVP muerto.
 3. **Validar con usuario real** del nicho antes de cerrar el alcance de un módulo. Si no se puede validar, marcar el módulo como "pre-validación" hasta que se haga.
 4. **Branding propio por módulo**. Cada módulo define nombre, color de acento, tagline. Bronco Drift no se mete en lo visual del módulo, solo lo aloja.
-5. **Documentar el aprendizaje**. Cada bug no-obvio va a `docs/LESSONS_LEARNED.md`. Cada decisión va al CHANGELOG. Cada deploy a `docs/DEPLOY_LOG.md`.
-6. **Si dudás, parar**. Antes de seguir agregando features, mirar referencias (Linear, Cron, Arc, Raycast, Notion, Bear, Are.na). La UI es el producto, no decoración final.
+5. **Sin landings de bienvenida en módulos**. La ruta `/<nicho>` lleva directamente a la app. La venta del producto se hace adentro: empty states + onboarding + banner de auth. Nunca una pantalla previa que el usuario tenga que pasar antes de probar.
+6. **Funcional sin login**. Todo módulo se puede usar end-to-end sin sesión, persistiendo en `localStorage`. La cuenta es opcional y sirve para sincronizar entre dispositivos. Al loguearse, la data local migra automáticamente.
+7. **Onboarding de 3-4 pasos obligatorio** en cada módulo (componente `<Onboarding>` compartido). Se muestra la primera vez, es saltable, queda en `localStorage`.
+8. **Documentar el aprendizaje**. Cada bug no-obvio va a `docs/LESSONS_LEARNED.md`. Cada decisión va al CHANGELOG. Cada deploy a `docs/DEPLOY_LOG.md`.
+9. **Si dudás, parar**. Antes de seguir agregando features, mirar referencias (Linear, Cron, Arc, Raycast, Notion, Bear, Are.na). La UI es el producto, no decoración final.
 
 ## Contexto técnico (resumido)
 
