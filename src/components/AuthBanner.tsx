@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { useUser } from '@/lib/auth';
+import { accentForPath } from '@/lib/routeAccent';
 import ModalAuth from './ModalAuth';
 
 const STORAGE_KEY = 'bronco_auth_banner_dismissed';
@@ -9,10 +11,12 @@ const STORAGE_KEY = 'bronco_auth_banner_dismissed';
  * Banner persistente que invita a iniciar sesión cuando NO hay user.
  * Dismisible con X (la elección se guarda en localStorage).
  * Se oculta automáticamente cuando hay user logueado.
+ *
+ * Acento y nombre del producto se resuelven por ruta. Props son override.
  */
 export default function AuthBanner({
-  acento = '#0ea5e9',
-  nombreProducto,
+  acento: acentoOverride,
+  nombreProducto: nombreOverride,
   mensaje = 'Para guardar tus datos y volver a verlos cuando quieras, iniciá sesión.',
 }: {
   acento?: string;
@@ -20,8 +24,13 @@ export default function AuthBanner({
   mensaje?: string;
 }) {
   const { user, loading } = useUser();
+  const location = useLocation();
   const [dismissed, setDismissed] = useState(false);
   const [modal, setModal] = useState<'login' | 'register' | null>(null);
+
+  const resolved = accentForPath(location.pathname);
+  const acento = acentoOverride ?? resolved.acento;
+  const nombreProducto = nombreOverride ?? resolved.nombreProducto;
 
   useEffect(() => {
     setDismissed(localStorage.getItem(STORAGE_KEY) === '1');
@@ -36,13 +45,16 @@ export default function AuthBanner({
   if (user) return null;
   if (dismissed) return null;
 
+  // Background tinted con el acento del módulo activo (~7% alpha).
+  const bgTint = `${acento}12`;
+
   return (
     <>
       <div
-        className="border-b border-neutral-800/60 px-4 py-2 flex items-center justify-center gap-3 text-xs"
-        style={{ backgroundColor: 'rgba(14, 165, 233, 0.06)' }}
+        className="border-b border-stone-800/60 px-4 py-2 flex items-center justify-center gap-3 text-xs"
+        style={{ backgroundColor: bgTint }}
       >
-        <span className="text-neutral-300 text-center">{mensaje}</span>
+        <span className="text-stone-300 text-center">{mensaje}</span>
         <div className="flex items-center gap-2 shrink-0">
           <button
             onClick={() => setModal('register')}
@@ -53,13 +65,13 @@ export default function AuthBanner({
           </button>
           <button
             onClick={() => setModal('login')}
-            className="text-neutral-300 hover:text-white px-2"
+            className="text-stone-300 hover:text-white px-2"
           >
             Entrar
           </button>
           <button
             onClick={cerrar}
-            className="text-neutral-500 hover:text-white ml-1"
+            className="text-stone-500 hover:text-white ml-1"
             aria-label="Cerrar banner"
           >
             <X size={14} />

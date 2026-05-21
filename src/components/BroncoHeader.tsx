@@ -8,7 +8,7 @@ import AuthMenu from './AuthMenu';
  */
 export default function BroncoHeader() {
   return (
-    <header className="sticky top-0 z-40 bg-neutral-950/85 backdrop-blur-md border-b border-neutral-800/60">
+    <header className="sticky top-0 z-40 bg-stone-950/85 backdrop-blur-md border-b border-stone-800/70">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-4">
         <Link
           to="/"

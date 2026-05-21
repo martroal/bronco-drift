@@ -1,16 +1,21 @@
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import { useUser, logout } from '@/lib/auth';
+import { accentForPath } from '@/lib/routeAccent';
 import ModalAuth from './ModalAuth';
 
 /**
  * Menú de auth para colocar en el header de cualquier ruta (portfolio o módulo).
  * Sin sesión: botones "Iniciar sesión" y "Crear cuenta" que abren el modal.
  * Con sesión: email + botón logout.
+ *
+ * El acento y el nombre del producto se resuelven por ruta (ver routeAccent.ts).
+ * Las props `acento` y `nombreProducto` son override opcional para casos especiales.
  */
 export default function AuthMenu({
-  acento = '#0ea5e9',
-  nombreProducto,
+  acento: acentoOverride,
+  nombreProducto: nombreOverride,
   compact = false,
 }: {
   acento?: string;
@@ -18,7 +23,12 @@ export default function AuthMenu({
   compact?: boolean;
 }) {
   const { user, loading } = useUser();
+  const location = useLocation();
   const [modal, setModal] = useState<'login' | 'register' | null>(null);
+
+  const resolved = accentForPath(location.pathname);
+  const acento = acentoOverride ?? resolved.acento;
+  const nombreProducto = nombreOverride ?? resolved.nombreProducto;
 
   if (loading) {
     return <div className="text-xs text-neutral-600">...</div>;

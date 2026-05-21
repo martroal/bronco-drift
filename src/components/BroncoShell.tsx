@@ -10,7 +10,7 @@ import AuthBanner from './AuthBanner';
  */
 export default function BroncoShell() {
   return (
-    <div className="min-h-screen flex flex-col bg-neutral-950 text-neutral-100">
+    <div className="min-h-screen flex flex-col bg-stone-950 text-stone-100">
       <BroncoHeader />
       <AuthBanner />
       <div className="flex-1 flex flex-col">

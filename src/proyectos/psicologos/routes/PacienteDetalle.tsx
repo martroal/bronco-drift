@@ -107,7 +107,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
           <ArrowLeft size={12} />
           Pacientes
         </Link>
-        <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+        <div className="rounded-xl border border-dashed border-stone-800 p-10 text-center">
           <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
             Necesitás una cuenta para ver esto.
           </p>
@@ -159,7 +159,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
       </Link>
 
       {/* Header del paciente */}
-      <header className="mb-8 pb-6 border-b border-neutral-800/70">
+      <header className="mb-8 pb-6 border-b border-stone-800/70">
         <div className="flex flex-wrap items-baseline justify-between gap-4 mb-2">
           <h1 className="text-2xl sm:text-3xl tracking-tight" style={{ fontFamily: config.serif }}>
             {paciente.nombre}
@@ -183,7 +183,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
               <textarea
                 value={motivoTexto}
                 onChange={(e) => setMotivoTexto(e.target.value)}
-                className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm h-24 resize-none focus:border-neutral-600 focus:outline-none"
+                className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm h-24 resize-none focus:border-neutral-600 focus:outline-none"
                 autoFocus
               />
               <div className="flex items-center gap-2">
@@ -244,7 +244,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
         </div>
 
         {sesiones.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+          <div className="rounded-xl border border-dashed border-stone-800 p-10 text-center">
             <Calendar size={28} className="mx-auto mb-3 text-neutral-600" />
             <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
               Aún no hay sesiones registradas.
@@ -271,7 +271,7 @@ export default function PacienteDetalle({ user }: { user: User | null }) {
       </section>
 
       {/* Borrar paciente al final, después de scroll */}
-      <footer className="mt-16 pt-8 border-t border-neutral-800/60 flex items-center justify-between gap-2">
+      <footer className="mt-16 pt-8 border-t border-stone-800/60 flex items-center justify-between gap-2">
         <p className="text-[10px] text-neutral-600">
           Cualquier dato cargado acá es solo tuyo. Nadie más lo ve.
         </p>
@@ -329,12 +329,12 @@ function EstadoSelector({
     { value: 'alta', label: 'Alta', color: '#737373' },
   ];
   return (
-    <div className="flex items-center gap-1 rounded-md border border-neutral-800 bg-neutral-950 p-0.5">
+    <div className="flex items-center gap-1 rounded-md border border-stone-800 bg-stone-950 p-0.5">
       {opciones.map((op) => (
         <button
           key={op.value}
           onClick={() => onChange(op.value)}
-          className={`text-[10px] px-2 py-0.5 rounded-sm transition-all ${estado === op.value ? 'bg-neutral-800' : 'opacity-50 hover:opacity-100'}`}
+          className={`text-[10px] px-2 py-0.5 rounded-sm transition-all ${estado === op.value ? 'bg-stone-800' : 'opacity-50 hover:opacity-100'}`}
           style={{ color: estado === op.value ? op.color : undefined }}
         >
           {op.label}

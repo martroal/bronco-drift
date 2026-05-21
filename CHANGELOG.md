@@ -68,6 +68,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Fixed (impeccable critique de Freud: 6 fixes del opaco)
+- **Preview anónimo del Inicio**: se eliminó el `opacity-60` que velaba toda la card-ejemplo "Mariana G." (peor primera impresión posible). Se reemplazó con un badge sutil "VISTA DE EJEMPLO" en la esquina superior, manteniendo legibilidad del 100% del contenido.
+- **Acento de Freud**: subido de `#78350f` (amber-900, lightness 43%) a `#a16207` (amber-700, lightness 52%) para que se vea presente contra el fondo oscuro. amber-900 se "comía" en el espacio negativo.
+- **acentoSoft alpha**: subido de 0.08 a 0.14 para que el subheader del módulo y los tints sean perceptibles. La borde tinted pasó de 0.25 a 0.40 para reforzar separación.
+- **Borders y fondos tinted al calor**: todo el módulo Freud usa ahora `border-stone-800` y `bg-stone-900/950` en lugar de `neutral-*`, coherente con DESIGN.md (neutrales tinteados al calor para evitar el gris muerto).
+- **BroncoShell y BroncoHeader globales**: pasaron a `bg-stone-950` para que la plataforma entera tenga tinte cálido, no gris frío.
+- **AuthMenu y AuthBanner detectan el módulo activo por ruta** (`src/lib/routeAccent.ts`): cuando estás en `/freud/*` el botón "Crear cuenta" sale marrón cuero, cuando estás en `/contadores/*` sale cyan (el del módulo), en el portfolio sale stone-400 neutro. Antes salía siempre cyan, rompiendo la coherencia del módulo Freud.
+
 ### Added (impeccable teach: contexto formal)
 - `PRODUCT.md`: register (brand + product mix), misión, audiencia en dos capas, tono de voz, anti-references estéticas y de UX, principios estratégicos.
 - `DESIGN.md`: sistema visual completo. Color en OKLCH con neutrales tinteados al calor, color strategy por contexto (Restrained/Committed). Tipografía pair sans + mono: Geist + Geist Mono cargadas desde Google Fonts. Bitter como serif opcional por módulo (Freud ya la usa). Escala tipográfica 1.25x, layout containers por contexto, patrones de modal scrolleable, motion ease-out exponencial, theme dark default.

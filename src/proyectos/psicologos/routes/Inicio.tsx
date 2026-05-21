@@ -91,7 +91,7 @@ export default function Inicio({ user }: { user: User | null }) {
               <li key={paciente.id}>
                 <Link
                   to={`/freud/app/pacientes/${paciente.id}`}
-                  className="block rounded-xl border border-neutral-800 p-4 sm:p-5 hover:border-neutral-700 transition-colors group"
+                  className="block rounded-xl border border-stone-800 p-4 sm:p-5 hover:border-neutral-700 transition-colors group"
                   style={{ backgroundColor: 'rgba(120, 53, 15, 0.03)' }}
                 >
                   <div className="flex items-baseline justify-between gap-4 mb-3">
@@ -166,7 +166,7 @@ export default function Inicio({ user }: { user: User | null }) {
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2
-      className="text-xs uppercase tracking-[0.18em] text-neutral-500 mb-3 pb-2 border-b border-neutral-800/70"
+      className="text-xs uppercase tracking-[0.18em] text-neutral-500 mb-3 pb-2 border-b border-stone-800/70"
       style={{ fontFamily: config.serif }}
     >
       {children}
@@ -221,10 +221,16 @@ function PreviewAnonimo({ onLogin }: { onLogin: () => void }) {
   return (
     <div className="space-y-3">
       <div
-        className="rounded-xl border border-dashed border-neutral-800 p-4 sm:p-5 opacity-60"
-        style={{ backgroundColor: 'rgba(120, 53, 15, 0.02)' }}
+        className="rounded-xl border border-stone-700 p-4 sm:p-5 relative"
+        style={{ backgroundColor: config.acentoSoft }}
       >
-        <div className="flex items-baseline justify-between gap-4 mb-3">
+        <span
+          className="absolute -top-2 left-4 text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded"
+          style={{ backgroundColor: '#0c0a09', color: config.acento, border: `1px solid ${config.acentoSoftBorder}` }}
+        >
+          Vista de ejemplo
+        </span>
+        <div className="flex items-baseline justify-between gap-4 mb-3 mt-1">
           <h3 className="text-base sm:text-lg font-medium" style={{ fontFamily: config.serif }}>
             Mariana G.
           </h3>
@@ -254,7 +260,7 @@ function PreviewAnonimo({ onLogin }: { onLogin: () => void }) {
         </div>
       </div>
 
-      <div className="rounded-xl border border-neutral-800 p-5 text-center" style={{ backgroundColor: config.acentoSoft }}>
+      <div className="rounded-xl border border-stone-800 p-5 text-center" style={{ backgroundColor: config.acentoSoft }}>
         <p className="text-sm text-neutral-200 mb-3">
           Cuando inicies sesión, esto se llena con tus pacientes reales y los recaps automáticos de cada sesión.
         </p>
@@ -279,7 +285,7 @@ function EmptyProximos({
 }) {
   if (!tienePacientes) {
     return (
-      <div className="rounded-xl border border-dashed border-neutral-800 p-8 sm:p-12 text-center">
+      <div className="rounded-xl border border-dashed border-stone-800 p-8 sm:p-12 text-center">
         <p className="text-base sm:text-lg mb-2" style={{ fontFamily: config.serif }}>
           El cuaderno está nuevo.
         </p>
@@ -299,7 +305,7 @@ function EmptyProximos({
   }
 
   return (
-    <div className="rounded-xl border border-dashed border-neutral-800 p-8 text-center">
+    <div className="rounded-xl border border-dashed border-stone-800 p-8 text-center">
       <p className="text-sm text-neutral-400">
         No hay sesiones agendadas en los próximos 7 días.
       </p>
@@ -328,7 +334,7 @@ function ActionCard({
   return (
     <Link
       to={to}
-      className="flex items-start gap-3 rounded-xl border border-neutral-800 p-4 hover:border-neutral-700 transition-colors"
+      className="flex items-start gap-3 rounded-xl border border-stone-800 p-4 hover:border-neutral-700 transition-colors"
     >
       <span
         className="shrink-0 mt-0.5 w-9 h-9 rounded-lg flex items-center justify-center"
@@ -360,7 +366,7 @@ function ActionCardButton({
   return (
     <button
       onClick={onClick}
-      className="flex items-start gap-3 rounded-xl border border-neutral-800 p-4 hover:border-neutral-700 transition-colors text-left w-full"
+      className="flex items-start gap-3 rounded-xl border border-stone-800 p-4 hover:border-neutral-700 transition-colors text-left w-full"
     >
       <span
         className="shrink-0 mt-0.5 w-9 h-9 rounded-lg flex items-center justify-center"

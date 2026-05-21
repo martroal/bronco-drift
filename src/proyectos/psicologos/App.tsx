@@ -51,7 +51,7 @@ export default function FreudApp() {
 function Subheader() {
   return (
     <div
-      className="border-b border-neutral-800/60"
+      className="border-b border-stone-800/60"
       style={{ backgroundColor: config.acentoSoft }}
     >
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex items-baseline justify-between gap-4">
@@ -85,7 +85,7 @@ function NavTabs() {
   ];
 
   return (
-    <nav className="border-b border-neutral-800/60">
+    <nav className="border-b border-stone-800/60">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         <ul className="flex items-center gap-1">
           {tabs.map((tab) => (

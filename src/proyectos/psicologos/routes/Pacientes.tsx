@@ -97,7 +97,7 @@ export default function Pacientes({ user }: { user: User | null }) {
             value={filtro}
             onChange={(e) => setFiltro(e.target.value)}
             placeholder="Buscar por nombre o motivo..."
-            className="w-full bg-neutral-950 border border-neutral-800 rounded-md pl-9 pr-3 py-2 text-sm focus:border-neutral-600 focus:outline-none transition-colors"
+            className="w-full bg-stone-950 border border-stone-800 rounded-md pl-9 pr-3 py-2 text-sm focus:border-neutral-600 focus:outline-none transition-colors"
             disabled={!userId}
           />
         </div>
@@ -148,7 +148,7 @@ function PacienteCard({ paciente }: { paciente: Paciente }) {
   return (
     <Link
       to={`/freud/app/pacientes/${paciente.id}`}
-      className="block rounded-xl border border-neutral-800 p-4 hover:border-neutral-700 transition-colors group h-full"
+      className="block rounded-xl border border-stone-800 p-4 hover:border-neutral-700 transition-colors group h-full"
     >
       <div className="flex items-start justify-between gap-3 mb-2">
         <h3
@@ -199,13 +199,13 @@ function FiltroEstado({
     { value: 'alta', label: 'Alta' },
   ];
   return (
-    <div className={`flex items-center gap-1 rounded-md border border-neutral-800 bg-neutral-950 p-0.5 ${disabled ? 'opacity-40' : ''}`}>
+    <div className={`flex items-center gap-1 rounded-md border border-stone-800 bg-stone-950 p-0.5 ${disabled ? 'opacity-40' : ''}`}>
       {opciones.map((op) => (
         <button
           key={op.value}
           onClick={() => onChange(op.value)}
           disabled={disabled}
-          className={`text-xs px-2 py-1 rounded-sm transition-colors ${value === op.value ? 'bg-neutral-800 text-white' : 'text-neutral-500 hover:text-neutral-300'} ${disabled ? 'cursor-not-allowed' : ''}`}
+          className={`text-xs px-2 py-1 rounded-sm transition-colors ${value === op.value ? 'bg-stone-800 text-white' : 'text-neutral-500 hover:text-neutral-300'} ${disabled ? 'cursor-not-allowed' : ''}`}
         >
           {op.label}
         </button>
@@ -216,7 +216,7 @@ function FiltroEstado({
 
 function EmptyAnonimo({ onLogin }: { onLogin: () => void }) {
   return (
-    <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+    <div className="rounded-xl border border-dashed border-stone-800 p-10 text-center">
       <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
         Tus pacientes te esperan acá.
       </p>
@@ -237,7 +237,7 @@ function EmptyAnonimo({ onLogin }: { onLogin: () => void }) {
 
 function EmptyState({ onCrear, tieneAlgo }: { onCrear: () => void; tieneAlgo: boolean }) {
   return (
-    <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+    <div className="rounded-xl border border-dashed border-stone-800 p-10 text-center">
       <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
         {tieneAlgo ? 'Nada que coincida con tu búsqueda.' : 'Tu cuaderno está vacío.'}
       </p>

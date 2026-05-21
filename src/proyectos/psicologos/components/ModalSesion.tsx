@@ -173,11 +173,11 @@ export default function ModalSesion({
     >
       <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className="max-w-2xl w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl my-auto"
+          className="max-w-2xl w-full bg-stone-900 border border-stone-800 rounded-xl shadow-xl my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="flex items-center justify-between border-b border-neutral-800 px-5 py-3 sticky top-0 z-10"
+            className="flex items-center justify-between border-b border-stone-800 px-5 py-3 sticky top-0 z-10"
             style={{ backgroundColor: config.acentoSoft }}
           >
             <h2 className="text-sm font-semibold" style={{ fontFamily: config.serif, color: config.acento }}>
@@ -196,7 +196,7 @@ export default function ModalSesion({
               type="date"
               value={fecha}
               onChange={(e) => setFecha(e.target.value)}
-              className="bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+              className="bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm"
               required
             />
           </div>
@@ -265,7 +265,7 @@ export default function ModalSesion({
                 value={tagNuevo}
                 onChange={(e) => setTagNuevo(e.target.value)}
                 placeholder="Crear nuevo tag (ej: trabajo, ansiedad...)"
-                className="flex-1 bg-neutral-950 border border-neutral-800 rounded-md px-3 py-1.5 text-xs"
+                className="flex-1 bg-stone-950 border border-stone-800 rounded-md px-3 py-1.5 text-xs"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     e.preventDefault();
@@ -285,7 +285,7 @@ export default function ModalSesion({
 
           {error && <p className="text-xs text-red-400">{error}</p>}
 
-          <div className="flex items-center justify-between gap-2 pt-2 border-t border-neutral-800">
+          <div className="flex items-center justify-between gap-2 pt-2 border-t border-stone-800">
             {esEdicion ? (
               confirmarBorrar ? (
                 <div className="flex items-center gap-2">
@@ -369,7 +369,7 @@ function CampoPrompt({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm h-28 resize-y focus:border-neutral-600 focus:outline-none transition-colors"
+          className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm h-28 resize-y focus:border-neutral-600 focus:outline-none transition-colors"
         />
       ) : (
         <input
@@ -377,7 +377,7 @@ function CampoPrompt({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           autoFocus={autoFocus}
-          className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm focus:border-neutral-600 focus:outline-none transition-colors"
+          className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm focus:border-neutral-600 focus:outline-none transition-colors"
         />
       )}
     </div>

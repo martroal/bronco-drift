@@ -12,7 +12,7 @@ export default function FreudLanding() {
     >
       {/* Subheader del módulo */}
       <div
-        className="border-b border-neutral-800/60 px-6 py-3 flex items-center justify-between gap-4"
+        className="border-b border-stone-800/60 px-6 py-3 flex items-center justify-between gap-4"
         style={{ backgroundColor: config.acentoSoft }}
       >
         <span className="text-base font-semibold" style={{ color: config.acento, fontFamily: config.serif }}>
@@ -69,7 +69,7 @@ export default function FreudLanding() {
         </section>
 
         {/* Cómo funciona */}
-        <section className="rounded-xl border border-neutral-800 p-6 sm:p-8 mb-20" style={{ backgroundColor: 'rgba(120, 53, 15, 0.02)' }}>
+        <section className="rounded-xl border border-stone-800 p-6 sm:p-8 mb-20" style={{ backgroundColor: 'rgba(120, 53, 15, 0.02)' }}>
           <h2 className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-6" style={{ fontFamily: config.serif }}>
             Cómo funciona
           </h2>
@@ -107,7 +107,7 @@ function Feature({
   descripcion: string;
 }) {
   return (
-    <div className="rounded-lg border border-neutral-800 p-5">
+    <div className="rounded-lg border border-stone-800 p-5">
       <div style={{ color: config.acento }} className="mb-3">
         {icon}
       </div>

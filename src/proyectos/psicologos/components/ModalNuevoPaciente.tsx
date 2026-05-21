@@ -57,11 +57,11 @@ export default function ModalNuevoPaciente({
     >
       <div className="flex min-h-full items-center justify-center p-4">
         <div
-          className="max-w-md w-full bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl my-auto"
+          className="max-w-md w-full bg-stone-900 border border-stone-800 rounded-xl shadow-xl my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="flex items-center justify-between border-b border-neutral-800 px-5 py-3"
+            className="flex items-center justify-between border-b border-stone-800 px-5 py-3"
             style={{ backgroundColor: config.acentoSoft }}
           >
             <h2 className="text-sm font-semibold" style={{ fontFamily: config.serif, color: config.acento }}>
@@ -79,7 +79,7 @@ export default function ModalNuevoPaciente({
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               placeholder="Mariana G."
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+              className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm"
               autoFocus
               required
             />
@@ -93,7 +93,7 @@ export default function ModalNuevoPaciente({
               value={motivo}
               onChange={(e) => setMotivo(e.target.value)}
               placeholder="Ansiedad laboral, vínculo de pareja, etc."
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm h-20 resize-none"
+              className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm h-20 resize-none"
             />
           </div>
           <div>
@@ -102,7 +102,7 @@ export default function ModalNuevoPaciente({
               type="date"
               value={primeraSesion}
               onChange={(e) => setPrimeraSesion(e.target.value)}
-              className="w-full bg-neutral-950 border border-neutral-800 rounded-md px-3 py-2 text-sm"
+              className="w-full bg-stone-950 border border-stone-800 rounded-md px-3 py-2 text-sm"
             />
           </div>
           {error && <p className="text-xs text-red-400">{error}</p>}
