@@ -60,6 +60,9 @@ Por ahora hay un solo entorno (producción Supabase). Cuando se sume staging:
 | 002 | `002_contadores_clientes.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Clientes del contador con unique (user_id, cuit) para upsert del import CSV. |
 | 003 | `003_contadores_obligaciones.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Obligaciones con FK a clientes e índice (user_id, proxima_fecha) para sort del panel. |
 | 004 | `004_psicologos_modulo.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Schema completo del módulo Freud: pacientes, sesiones, tags, sesion_tags. RLS en las 4 tablas + GIN full-text index en español sobre los campos textuales de sesiones. |
+| 005 | `005_contratos_documentos.sql` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. Tabla del módulo Firma Digital Simple con dos firmantes inline (parte A y B), link_firma_token capability, hash_documento sha256. RLS con owner full access + public read/update solo en estado `enviado` con token. |
+| 005b | RLS fix `public sign por token` | `oalmngyxgfomtbzysgym` | 2026-05-19 | Success. ALTER de la policy para permitir `estado in (enviado, firmado)` en el `with check`, no solo `link_firma_token is not null`. Sin este fix, el UPDATE de firma por la parte B violaba RLS. |
+| 006 | `006_contratos_dni.sql` | `oalmngyxgfomtbzysgym` | 2026-05-21 | Success. Columnas `parte_a_dni` y `parte_b_dni` nullable agregadas a `contratos_documentos`. Para la aclaración estándar argentina debajo de cada firma. |
 
 > Cuando apliques una migración, agregá una fila acá inmediatamente. Si la app rompe después de aplicarla, esta tabla te dice qué revertir.
 
