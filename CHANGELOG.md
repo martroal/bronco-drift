@@ -68,6 +68,10 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Fixed (modales atrapados detrás del subheader)
+- Los modales rendereados desde `AuthMenu` (dentro del `BroncoHeader` que tiene `backdrop-blur-md`) quedaban atrapados en el stacking context del header y eran tapados por el subheader del módulo y el contenido. **Root cause**: `backdrop-filter` crea un nuevo stacking context, por lo que `z-50` del modal era relativo a ese contexto, no al viewport.
+- Solución: usar `React Portal` (`createPortal(jsx, document.body)`) en los 4 modales del proyecto para que el overlay se monte como hijo directo de `body` y escape de cualquier stacking context. Aplicado a `ModalAuth`, `Modal` genérico de contadores, `ModalNuevoPaciente` y `ModalSesion` de Freud.
+
 ### Fixed (impeccable critique de Freud: 6 fixes del opaco)
 - **Preview anónimo del Inicio**: se eliminó el `opacity-60` que velaba toda la card-ejemplo "Mariana G." (peor primera impresión posible). Se reemplazó con un badge sutil "VISTA DE EJEMPLO" en la esquina superior, manteniendo legibilidad del 100% del contenido.
 - **Acento de Freud**: subido de `#78350f` (amber-900, lightness 43%) a `#a16207` (amber-700, lightness 52%) para que se vea presente contra el fondo oscuro. amber-900 se "comía" en el espacio negativo.

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { signIn, signUp } from '@/lib/auth';
 
@@ -77,7 +78,7 @@ export default function ModalAuth({
     ? nombreProducto ? `Entrar a ${nombreProducto}` : 'Iniciar sesión'
     : nombreProducto ? `Crear cuenta en ${nombreProducto}` : 'Crear cuenta';
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={cerrar}
@@ -174,6 +175,7 @@ export default function ModalAuth({
         </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

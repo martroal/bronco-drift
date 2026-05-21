@@ -1,6 +1,7 @@
 import { X } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 export default function Modal({
   open,
@@ -28,7 +29,7 @@ export default function Modal({
 
   const widthClass = size === 'lg' ? 'max-w-2xl' : 'max-w-md';
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={onClose}
@@ -51,6 +52,7 @@ export default function Modal({
           <div className="px-5 py-4">{children}</div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

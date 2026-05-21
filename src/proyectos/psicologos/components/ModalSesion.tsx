@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Plus } from 'lucide-react';
 import {
   actualizarSesion,
@@ -166,7 +167,7 @@ export default function ModalSesion({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={onClose}
@@ -339,7 +340,8 @@ export default function ModalSesion({
         </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

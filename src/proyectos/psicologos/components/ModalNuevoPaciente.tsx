@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { crearPaciente } from '../lib/queries';
 import { config } from '../config';
@@ -50,7 +51,7 @@ export default function ModalNuevoPaciente({
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div
       className="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-sm"
       onClick={onClose}
@@ -126,6 +127,7 @@ export default function ModalNuevoPaciente({
         </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
