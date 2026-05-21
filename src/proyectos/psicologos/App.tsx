@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { Home as HomeIcon, NotebookPen } from 'lucide-react';
-import type { User } from '@supabase/supabase-js';
 import { useUser } from '@/lib/auth';
 import { suscribir } from '@/lib/modulos';
-import ModalAuth from '@/components/ModalAuth';
 import { config } from './config';
 import Inicio from './routes/Inicio';
 import Pacientes from './routes/Pacientes';
@@ -36,7 +34,14 @@ export default function FreudApp() {
       }}
     >
       <Subheader />
-      {user ? <AppLogueada user={user} /> : <PantallaAnonima />}
+      <NavTabs />
+      <div className="flex-1">
+        <Routes>
+          <Route index element={<Inicio user={user} />} />
+          <Route path="pacientes" element={<Pacientes user={user} />} />
+          <Route path="pacientes/:id" element={<PacienteDetalle user={user} />} />
+        </Routes>
+      </div>
     </div>
   );
 }
@@ -66,70 +71,11 @@ function Subheader() {
   );
 }
 
-/* -------------------- Pantalla sin sesión -------------------- */
-
-function PantallaAnonima() {
-  const [modal, setModal] = useState<'login' | 'register' | null>(null);
-  return (
-    <div className="flex-1 flex items-center justify-center px-6 py-16">
-      <div className="max-w-md text-center">
-        <p className="text-xs uppercase tracking-wider text-neutral-500 mb-2" style={{ fontFamily: config.serif }}>
-          Freud
-        </p>
-        <h1 className="text-2xl sm:text-3xl mb-4 tracking-tight" style={{ fontFamily: config.serif }}>
-          Tu cuaderno te está esperando.
-        </h1>
-        <p className="text-sm text-neutral-400 mb-6 leading-relaxed">
-          Iniciá sesión o creá una cuenta para empezar a registrar pacientes y sesiones. La cuenta es gratis, sin tarjeta, sin pruebas que vencen.
-        </p>
-        <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={() => setModal('register')}
-            style={{ backgroundColor: config.acento }}
-            className="px-4 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
-          >
-            Crear cuenta gratis
-          </button>
-          <button
-            onClick={() => setModal('login')}
-            className="px-4 py-2 text-xs text-neutral-300 hover:text-white"
-          >
-            Iniciar sesión
-          </button>
-        </div>
-
-        <ModalAuth
-          open={modal !== null}
-          modoInicial={modal ?? 'login'}
-          onClose={() => setModal(null)}
-          acento={config.acento}
-          nombreProducto={config.nombre}
-        />
-      </div>
-    </div>
-  );
-}
-
-/* -------------------- App logueada -------------------- */
-
-function AppLogueada({ user }: { user: User }) {
-  return (
-    <>
-      <NavTabs />
-      <div className="flex-1">
-        <Routes>
-          <Route index element={<Inicio userId={user.id} />} />
-          <Route path="pacientes" element={<Pacientes userId={user.id} />} />
-          <Route path="pacientes/:id" element={<PacienteDetalle userId={user.id} />} />
-        </Routes>
-      </div>
-    </>
-  );
-}
+/* -------------------- Tabs internas del módulo -------------------- */
 
 function NavTabs() {
   const location = useLocation();
-  // Detectar si estamos en detalle de paciente — ahí ocultamos las tabs para no recargar visualmente.
+  // En detalle de paciente ocultamos las tabs para foco visual en el cuaderno.
   const enDetalle = /\/freud\/app\/pacientes\/[^/]+$/.test(location.pathname);
   if (enDetalle) return null;
 

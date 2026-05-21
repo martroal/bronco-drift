@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Search, UserPlus } from 'lucide-react';
+import type { User } from '@supabase/supabase-js';
 import { listarPacientes, type Paciente, type EstadoPaciente } from '../lib/queries';
 import { formatearProxima } from '../lib/recap';
 import { config } from '../config';
 import ModalNuevoPaciente from '../components/ModalNuevoPaciente';
+import ModalAuth from '@/components/ModalAuth';
 
 const estadoLabel: Record<EstadoPaciente, string> = {
   activo: 'activo',
@@ -12,14 +14,22 @@ const estadoLabel: Record<EstadoPaciente, string> = {
   alta: 'alta',
 };
 
-export default function Pacientes({ userId }: { userId: string }) {
+export default function Pacientes({ user }: { user: User | null }) {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState('');
   const [estadoFiltro, setEstadoFiltro] = useState<EstadoPaciente | 'todos'>('todos');
   const [modalNuevo, setModalNuevo] = useState(false);
+  const [modalAuth, setModalAuth] = useState(false);
+
+  const userId = user?.id ?? null;
 
   async function cargar() {
+    if (!userId) {
+      setPacientes([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const data = await listarPacientes(userId);
@@ -32,6 +42,14 @@ export default function Pacientes({ userId }: { userId: string }) {
   useEffect(() => {
     cargar();
   }, [userId]);
+
+  function pedirAuthOEjecutar(accion: () => void) {
+    if (!userId) {
+      setModalAuth(true);
+    } else {
+      accion();
+    }
+  }
 
   const filtrados = useMemo(() => {
     const q = filtro.trim().toLowerCase();
@@ -53,11 +71,13 @@ export default function Pacientes({ userId }: { userId: string }) {
             Pacientes
           </h1>
           <p className="text-xs text-neutral-500 mt-1">
-            {pacientes.length} en total · {pacientes.filter((p) => p.estado === 'activo').length} activos
+            {userId
+              ? `${pacientes.length} en total · ${pacientes.filter((p) => p.estado === 'activo').length} activos`
+              : 'Iniciá sesión para ver y guardar tus pacientes'}
           </p>
         </div>
         <button
-          onClick={() => setModalNuevo(true)}
+          onClick={() => pedirAuthOEjecutar(() => setModalNuevo(true))}
           style={{ backgroundColor: config.acento }}
           className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
         >
@@ -78,12 +98,15 @@ export default function Pacientes({ userId }: { userId: string }) {
             onChange={(e) => setFiltro(e.target.value)}
             placeholder="Buscar por nombre o motivo..."
             className="w-full bg-neutral-950 border border-neutral-800 rounded-md pl-9 pr-3 py-2 text-sm focus:border-neutral-600 focus:outline-none transition-colors"
+            disabled={!userId}
           />
         </div>
-        <FiltroEstado value={estadoFiltro} onChange={setEstadoFiltro} />
+        <FiltroEstado value={estadoFiltro} onChange={setEstadoFiltro} disabled={!userId} />
       </div>
 
-      {loading ? (
+      {!userId ? (
+        <EmptyAnonimo onLogin={() => setModalAuth(true)} />
+      ) : loading ? (
         <div className="text-center text-xs text-neutral-500 py-20">Cargando pacientes...</div>
       ) : filtrados.length === 0 ? (
         <EmptyState onCrear={() => setModalNuevo(true)} tieneAlgo={pacientes.length > 0} />
@@ -97,11 +120,19 @@ export default function Pacientes({ userId }: { userId: string }) {
         </ul>
       )}
 
-      <ModalNuevoPaciente
-        open={modalNuevo}
-        onClose={() => setModalNuevo(false)}
-        userId={userId}
-        onCreated={cargar}
+      {userId && (
+        <ModalNuevoPaciente
+          open={modalNuevo}
+          onClose={() => setModalNuevo(false)}
+          userId={userId}
+          onCreated={cargar}
+        />
+      )}
+      <ModalAuth
+        open={modalAuth}
+        onClose={() => setModalAuth(false)}
+        acento={config.acento}
+        nombreProducto={config.nombre}
       />
     </div>
   );
@@ -155,9 +186,11 @@ function PacienteCard({ paciente }: { paciente: Paciente }) {
 function FiltroEstado({
   value,
   onChange,
+  disabled,
 }: {
   value: EstadoPaciente | 'todos';
   onChange: (v: EstadoPaciente | 'todos') => void;
+  disabled?: boolean;
 }) {
   const opciones: { value: EstadoPaciente | 'todos'; label: string }[] = [
     { value: 'todos', label: 'Todos' },
@@ -166,16 +199,38 @@ function FiltroEstado({
     { value: 'alta', label: 'Alta' },
   ];
   return (
-    <div className="flex items-center gap-1 rounded-md border border-neutral-800 bg-neutral-950 p-0.5">
+    <div className={`flex items-center gap-1 rounded-md border border-neutral-800 bg-neutral-950 p-0.5 ${disabled ? 'opacity-40' : ''}`}>
       {opciones.map((op) => (
         <button
           key={op.value}
           onClick={() => onChange(op.value)}
-          className={`text-xs px-2 py-1 rounded-sm transition-colors ${value === op.value ? 'bg-neutral-800 text-white' : 'text-neutral-500 hover:text-neutral-300'}`}
+          disabled={disabled}
+          className={`text-xs px-2 py-1 rounded-sm transition-colors ${value === op.value ? 'bg-neutral-800 text-white' : 'text-neutral-500 hover:text-neutral-300'} ${disabled ? 'cursor-not-allowed' : ''}`}
         >
           {op.label}
         </button>
       ))}
+    </div>
+  );
+}
+
+function EmptyAnonimo({ onLogin }: { onLogin: () => void }) {
+  return (
+    <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+      <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
+        Tus pacientes te esperan acá.
+      </p>
+      <p className="text-sm text-neutral-500 mb-5 max-w-md mx-auto">
+        Cargás cada paciente una vez, después solo agregás sus sesiones. La memoria queda guardada y sincronizada en cualquier dispositivo.
+      </p>
+      <button
+        onClick={onLogin}
+        style={{ backgroundColor: config.acento }}
+        className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
+      >
+        <UserPlus size={14} />
+        Crear cuenta gratis
+      </button>
     </div>
   );
 }

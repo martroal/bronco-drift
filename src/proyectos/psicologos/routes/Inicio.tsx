@@ -1,19 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, NotebookPen, UserPlus } from 'lucide-react';
+import type { User } from '@supabase/supabase-js';
 import type { Paciente } from '../lib/queries';
 import { listarPacientes, proximosPacientes } from '../lib/queries';
 import { construirRecap, formatearPasado, formatearProxima, type Recap } from '../lib/recap';
 import { config } from '../config';
 import ModalNuevoPaciente from '../components/ModalNuevoPaciente';
+import ModalAuth from '@/components/ModalAuth';
 
-export default function Inicio({ userId }: { userId: string }) {
+export default function Inicio({ user }: { user: User | null }) {
   const [proximos, setProximos] = useState<{ paciente: Paciente; recap: Recap | null }[]>([]);
   const [todosLosPacientes, setTodosLosPacientes] = useState<Paciente[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalNuevo, setModalNuevo] = useState(false);
+  const [modalAuth, setModalAuth] = useState(false);
+
+  const userId = user?.id ?? null;
 
   async function cargar() {
+    if (!userId) {
+      setProximos([]);
+      setTodosLosPacientes([]);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
       const [proxs, todos] = await Promise.all([
@@ -34,6 +45,14 @@ export default function Inicio({ userId }: { userId: string }) {
     cargar();
   }, [userId]);
 
+  function pedirAuthOEjecutar(accion: () => void) {
+    if (!userId) {
+      setModalAuth(true);
+    } else {
+      accion();
+    }
+  }
+
   if (loading) {
     return (
       <div className="text-center text-xs text-neutral-500 py-20">Cargando tu cuaderno...</div>
@@ -45,7 +64,10 @@ export default function Inicio({ userId }: { userId: string }) {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-10">
       <header>
-        <p className="text-xs uppercase tracking-wider text-neutral-500 mb-1" style={{ fontFamily: config.serif }}>
+        <p
+          className="text-xs uppercase tracking-wider text-neutral-500 mb-1"
+          style={{ fontFamily: config.serif }}
+        >
           {saludoSegunHora()}
         </p>
         <h1 className="text-2xl sm:text-3xl tracking-tight" style={{ fontFamily: config.serif }}>
@@ -56,7 +78,9 @@ export default function Inicio({ userId }: { userId: string }) {
       {/* Próximos turnos con recap */}
       <section>
         <SectionTitle>Próximos pacientes</SectionTitle>
-        {proximos.length === 0 ? (
+        {!userId ? (
+          <PreviewAnonimo onLogin={() => setModalAuth(true)} />
+        ) : proximos.length === 0 ? (
           <EmptyProximos
             tienePacientes={tienePacientes}
             onCrear={() => setModalNuevo(true)}
@@ -96,32 +120,42 @@ export default function Inicio({ userId }: { userId: string }) {
         )}
       </section>
 
-      {/* Acciones rápidas */}
-      {tienePacientes && (
-        <section>
-          <SectionTitle>Acciones rápidas</SectionTitle>
-          <div className="grid sm:grid-cols-2 gap-3">
-            <ActionCard
-              to="/freud/app/pacientes"
-              icon={<NotebookPen size={18} />}
-              titulo="Mis pacientes"
-              descripcion={`${todosLosPacientes.length} ${todosLosPacientes.length === 1 ? 'paciente' : 'pacientes'} en tu cuaderno`}
-            />
-            <ActionCardButton
-              onClick={() => setModalNuevo(true)}
-              icon={<UserPlus size={18} />}
-              titulo="Nuevo paciente"
-              descripcion="Empezá un nuevo proceso terapéutico"
-            />
-          </div>
-        </section>
-      )}
+      {/* Acciones rápidas — siempre visibles para que se entienda qué hace la app */}
+      <section>
+        <SectionTitle>Acciones rápidas</SectionTitle>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <ActionCard
+            to="/freud/app/pacientes"
+            icon={<NotebookPen size={18} />}
+            titulo="Mis pacientes"
+            descripcion={
+              userId
+                ? `${todosLosPacientes.length} ${todosLosPacientes.length === 1 ? 'paciente' : 'pacientes'} en tu cuaderno`
+                : 'Ver y buscar todos tus pacientes'
+            }
+          />
+          <ActionCardButton
+            onClick={() => pedirAuthOEjecutar(() => setModalNuevo(true))}
+            icon={<UserPlus size={18} />}
+            titulo="Nuevo paciente"
+            descripcion="Empezá un nuevo proceso terapéutico"
+          />
+        </div>
+      </section>
 
-      <ModalNuevoPaciente
-        open={modalNuevo}
-        onClose={() => setModalNuevo(false)}
-        userId={userId}
-        onCreated={cargar}
+      {userId && (
+        <ModalNuevoPaciente
+          open={modalNuevo}
+          onClose={() => setModalNuevo(false)}
+          userId={userId}
+          onCreated={cargar}
+        />
+      )}
+      <ModalAuth
+        open={modalAuth}
+        onClose={() => setModalAuth(false)}
+        acento={config.acento}
+        nombreProducto={config.nombre}
       />
     </div>
   );
@@ -179,6 +213,63 @@ function RecapDetalle({ recap }: { recap: Recap }) {
   );
 }
 
+/**
+ * Estado anónimo del bloque de próximos pacientes: mostramos una tarjeta-ejemplo
+ * con datos demo para que se vea qué hace el módulo, y un CTA claro.
+ */
+function PreviewAnonimo({ onLogin }: { onLogin: () => void }) {
+  return (
+    <div className="space-y-3">
+      <div
+        className="rounded-xl border border-dashed border-neutral-800 p-4 sm:p-5 opacity-60"
+        style={{ backgroundColor: 'rgba(120, 53, 15, 0.02)' }}
+      >
+        <div className="flex items-baseline justify-between gap-4 mb-3">
+          <h3 className="text-base sm:text-lg font-medium" style={{ fontFamily: config.serif }}>
+            Mariana G.
+          </h3>
+          <span
+            className="inline-flex items-center gap-1.5 text-xs font-medium px-2 py-0.5 rounded-full"
+            style={{ backgroundColor: config.acentoSoft, color: config.acento }}
+          >
+            <Clock size={12} />
+            Hoy 18:00
+          </span>
+        </div>
+        <div className="space-y-1.5 text-xs text-neutral-400">
+          <p>
+            <span className="text-neutral-600">Última sesión:</span>{' '}
+            <span className="text-neutral-300">hace 6 días</span>
+            <span className="text-neutral-600"> · tema:</span>{' '}
+            <span className="text-neutral-200">presión en el trabajo</span>
+          </p>
+          <p>
+            <span className="text-neutral-600">Tarea pendiente:</span>{' '}
+            <span className="text-neutral-200">anotar emociones cuando aparece la ansiedad</span>
+          </p>
+          <p>
+            <span className="text-neutral-600">Plan que escribiste:</span>{' '}
+            <span className="text-neutral-200">preguntarle por la situación con su mamá</span>
+          </p>
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-neutral-800 p-5 text-center" style={{ backgroundColor: config.acentoSoft }}>
+        <p className="text-sm text-neutral-200 mb-3">
+          Cuando inicies sesión, esto se llena con tus pacientes reales y los recaps automáticos de cada sesión.
+        </p>
+        <button
+          onClick={onLogin}
+          style={{ backgroundColor: config.acento }}
+          className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
+        >
+          Crear cuenta gratis
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function EmptyProximos({
   tienePacientes,
   onCrear,
@@ -189,10 +280,7 @@ function EmptyProximos({
   if (!tienePacientes) {
     return (
       <div className="rounded-xl border border-dashed border-neutral-800 p-8 sm:p-12 text-center">
-        <p
-          className="text-base sm:text-lg mb-2"
-          style={{ fontFamily: config.serif }}
-        >
+        <p className="text-base sm:text-lg mb-2" style={{ fontFamily: config.serif }}>
           El cuaderno está nuevo.
         </p>
         <p className="text-sm text-neutral-400 mb-5 max-w-md mx-auto">

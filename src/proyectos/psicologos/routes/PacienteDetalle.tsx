@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Calendar, Plus, Trash2, UserPlus } from 'lucide-react';
+import type { User } from '@supabase/supabase-js';
 import {
   actualizarPaciente,
   eliminarPaciente,
@@ -13,9 +14,11 @@ import {
 import { config } from '../config';
 import TimelineSesion from '../components/TimelineSesion';
 import ModalSesion from '../components/ModalSesion';
+import ModalAuth from '@/components/ModalAuth';
 
-export default function PacienteDetalle({ userId }: { userId: string }) {
+export default function PacienteDetalle({ user }: { user: User | null }) {
   const { id } = useParams<{ id: string }>();
+  const userId = user?.id ?? null;
   const navigate = useNavigate();
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [sesiones, setSesiones] = useState<SesionConTags[]>([]);
@@ -26,9 +29,13 @@ export default function PacienteDetalle({ userId }: { userId: string }) {
   const [confirmarBorrar, setConfirmarBorrar] = useState(false);
   const [editandoMotivo, setEditandoMotivo] = useState(false);
   const [motivoTexto, setMotivoTexto] = useState('');
+  const [modalAuth, setModalAuth] = useState(false);
 
   const cargar = useCallback(async () => {
-    if (!id) return;
+    if (!id || !userId) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
@@ -41,7 +48,7 @@ export default function PacienteDetalle({ userId }: { userId: string }) {
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, userId]);
 
   useEffect(() => {
     cargar();
@@ -88,6 +95,42 @@ export default function PacienteDetalle({ userId }: { userId: string }) {
   function abrirEditarSesion(s: SesionConTags) {
     setSesionEditar(s);
     setModalSesionAbierto(true);
+  }
+
+  if (!userId) {
+    return (
+      <div className="max-w-2xl mx-auto px-6 py-16">
+        <Link
+          to="/freud/app/pacientes"
+          className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-300 mb-8"
+        >
+          <ArrowLeft size={12} />
+          Pacientes
+        </Link>
+        <div className="rounded-xl border border-dashed border-neutral-800 p-10 text-center">
+          <p className="text-base mb-2" style={{ fontFamily: config.serif }}>
+            Necesitás una cuenta para ver esto.
+          </p>
+          <p className="text-sm text-neutral-500 mb-5 max-w-md mx-auto">
+            Cada psicólogo solo ve sus propios pacientes. Creá tu cuenta gratis y empezá a cargar el tuyo.
+          </p>
+          <button
+            onClick={() => setModalAuth(true)}
+            style={{ backgroundColor: config.acento }}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-medium text-white rounded-md hover:opacity-90"
+          >
+            <UserPlus size={14} />
+            Crear cuenta gratis
+          </button>
+        </div>
+        <ModalAuth
+          open={modalAuth}
+          onClose={() => setModalAuth(false)}
+          acento={config.acento}
+          nombreProducto={config.nombre}
+        />
+      </div>
+    );
   }
 
   if (loading) {
