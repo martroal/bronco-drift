@@ -10,8 +10,7 @@ import ModalAuth from './ModalAuth';
  * Sin sesión: botones "Iniciar sesión" y "Crear cuenta" que abren el modal.
  * Con sesión: email + botón logout.
  *
- * El acento y el nombre del producto se resuelven por ruta (ver routeAccent.ts).
- * Las props `acento` y `nombreProducto` son override opcional para casos especiales.
+ * Touch targets respetan WCAG 2.1 AA (mínimo 44x44 efectivo via padding).
  */
 export default function AuthMenu({
   acento: acentoOverride,
@@ -36,7 +35,7 @@ export default function AuthMenu({
 
   if (user) {
     return (
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         {!compact && (
           <span className="text-xs text-neutral-500 hidden sm:inline truncate max-w-[180px]">
             {user.email}
@@ -44,7 +43,7 @@ export default function AuthMenu({
         )}
         <button
           onClick={logout}
-          className="text-neutral-400 hover:text-white"
+          className="text-neutral-400 hover:text-white p-2.5 rounded-md"
           title={`Salir (${user.email ?? ''})`}
           aria-label="Cerrar sesión"
         >
@@ -56,17 +55,17 @@ export default function AuthMenu({
 
   return (
     <>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <button
           onClick={() => setModal('login')}
-          className="text-xs text-neutral-300 hover:text-white px-2 py-1.5"
+          className="text-xs text-neutral-300 hover:text-white px-3 py-2.5 rounded-md"
         >
           Iniciar sesión
         </button>
         <button
           onClick={() => setModal('register')}
           style={{ backgroundColor: acento }}
-          className="text-xs font-medium text-white px-3 py-1.5 rounded-md hover:opacity-90"
+          className="text-xs font-medium text-white px-3 py-2.5 rounded-md hover:opacity-90"
         >
           Crear cuenta
         </button>

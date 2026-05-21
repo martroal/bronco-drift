@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { isSupabaseConfigured } from '@/lib/supabase';
+import { useDocTitle } from '@/lib/useDocTitle';
 import { config as freudConfig } from '@/proyectos/psicologos/config';
 import { config as vencetConfig } from '@/proyectos/contadores/config';
 import { config as contratosConfig } from '@/proyectos/contratos/config';
@@ -48,6 +49,7 @@ const estadoEstilos: Record<Modulo['estado'], string> = {
 };
 
 export default function Home() {
+  useDocTitle('Bronco Drift · Apps funcionales y gratis');
   return (
     <div className="flex-1 flex flex-col">
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-10 space-y-10">

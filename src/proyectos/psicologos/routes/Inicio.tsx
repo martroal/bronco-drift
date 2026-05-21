@@ -6,6 +6,7 @@ import type { Paciente } from '../lib/queries';
 import { listarPacientes, proximosPacientes } from '../lib/queries';
 import { ultimasSesionesDePaciente } from '../lib/queries';
 import { formatearPasado, formatearProxima } from '../lib/recap';
+import { useDocTitle } from '@/lib/useDocTitle';
 import { config } from '../config';
 import ModalNuevoPaciente from '../components/ModalNuevoPaciente';
 
@@ -18,6 +19,7 @@ type Recap = {
 };
 
 export default function Inicio({ user }: { user: User | null }) {
+  useDocTitle('Inicio · Freud');
   const [proximos, setProximos] = useState<{ paciente: Paciente; recap: Recap | null }[]>([]);
   const [todosLosPacientes, setTodosLosPacientes] = useState<Paciente[]>([]);
   const [loading, setLoading] = useState(true);

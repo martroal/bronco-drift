@@ -10,11 +10,13 @@ import { config } from '../config';
 import PreviewContrato from '../components/PreviewContrato';
 import FirmaCanvas from '../components/FirmaCanvas';
 import AuditTrail from '../components/AuditTrail';
+import { useDocTitle } from '@/lib/useDocTitle';
 
 export default function Detalle({ user }: { user: User | null }) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const userId = user?.id ?? null;
+  useDocTitle('Contrato · Firma Digital Simple');
 
   const [contrato, setContrato] = useState<Contrato | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +35,7 @@ export default function Detalle({ user }: { user: User | null }) {
     try {
       const c = await obtenerContrato(userId, id);
       setContrato(c);
+      if (c?.titulo) document.title = `${c.titulo} · Firma Digital Simple`;
     } catch (err) {
       setError((err as Error).message);
     } finally {

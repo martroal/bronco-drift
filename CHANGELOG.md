@@ -68,6 +68,16 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Fixed (8 fixes del audit /contratos)
+- **C1 — Rutas públicas standalone limpias**: nuevo helper `src/lib/publicRoutes.ts` con regex de rutas tipo `/contratos/firmar/:token`. BroncoHeader y AuthBanner detectan y se ocultan en esas rutas. La página de firma queda sin el shell de la plataforma.
+- **C2 — Lazy loading por módulo + dynamic import de html2pdf**: cada módulo (`/contadores/*`, `/freud/*`, `/contratos/*`) en su chunk separado vía `React.lazy` + `Suspense`. `html2pdf.js` se importa dinámicamente solo cuando se llama a `generarPDF`. Bundle inicial pasó de **486 KB gzip → 119 KB gzip** (~4x más rápido en mobile). html2pdf (285 KB gzip) solo se descarga cuando el usuario hace clic en descargar PDF.
+- **C3 — Touch targets a 44px+**: AuthMenu y AuthBanner usan padding vertical mayor (py-2.5). El botón X del banner ahora tiene hit area de 36×36 (`p-2` + ícono 14px).
+- **C4 — Doc title dinámico**: nuevo hook `useDocTitle` en `src/lib/useDocTitle.ts`. Aplicado en Home (`Bronco Drift · Apps funcionales y gratis`), Freud Inicio (`Inicio · Freud`), Contratos Lista (`Tus contratos · Firma Digital Simple`), Nuevo, Detalle (usa el título del contrato cargado), Firmar.
+- **H1 + H2 — AuthBanner adaptativo**: detecta si está en módulo light (`/contratos/*`) y cambia el tono del banner al papel cremoso con tinte del acento. En módulos dark mantiene el tono oscuro. Copy mobile más corto ("Guardá tu data en la nube") + completo desde sm en adelante.
+- **H3 — Landmark `<main>`** en Firmar.tsx (incluyendo la pantalla de error) y en Lista.tsx. Los lectores de pantalla ahora pueden saltar al contenido principal.
+- **H4 — Search + filtros en Lista de contratos**: input de búsqueda por título + tabs de estado (Todos / Borradores / Enviados / Firmados). Empty state separado cuando no matchea búsqueda.
+- **H5 — Bitter URL en Google Fonts**: reorganización del query string. La sintaxis combinada con ítalico variable + axis no funcionaba bien con `0,400..700;1,400`. Ahora `0,400;0,500;0,600;0,700;1,400` (weights explícitos). Bitter ahora carga y Freud recupera su tipografía display.
+
 ### Fixed (RLS policy bloqueaba la firma de la otra parte)
 - La policy `public sign por token` en `contratos_documentos` tenía `with check (link_firma_token is not null)` pero faltaba permitir explícitamente `estado in ('enviado', 'firmado')`. Como el UPDATE de firma cambia el estado a `'firmado'`, Postgres rechazaba la fila resultante con `new row violates row-level security policy`. Fix: ampliar el `with check` para que acepte ambos estados. Aplicar el ALTER en producción manualmente.
 

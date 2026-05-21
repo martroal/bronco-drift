@@ -7,12 +7,14 @@ import { obtenerIPPublica } from '../lib/hash';
 import { config } from '../config';
 import PreviewContrato from '../components/PreviewContrato';
 import FirmaCanvas from '../components/FirmaCanvas';
+import { useDocTitle } from '@/lib/useDocTitle';
 
 /**
  * Página pública de firma. Accesible sin login, solo con el token en la URL.
  * La RLS de Supabase permite SELECT/UPDATE solo cuando el doc está en estado 'enviado'.
  */
 export default function Firmar() {
+  useDocTitle('Firmar contrato · Firma Digital Simple');
   const { token } = useParams<{ token: string }>();
   const [contrato, setContrato] = useState<Contrato | null>(null);
   const [loading, setLoading] = useState(true);
@@ -126,7 +128,7 @@ export default function Firmar() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <header className="text-center mb-8">
         <p
           className="text-xs uppercase tracking-[0.2em] mb-2"
@@ -193,14 +195,14 @@ export default function Firmar() {
           Al firmar registramos tu nombre, fecha, IP pública y user-agent del navegador. Esta información queda incluida en el PDF como audit trail (Ley 25.506 Argentina).
         </p>
       </div>
-    </div>
+    </main>
   );
 }
 
 function Centrado({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-center justify-center text-center px-6 py-20">
+    <main className="flex flex-col items-center justify-center text-center px-6 py-20">
       {children}
-    </div>
+    </main>
   );
 }

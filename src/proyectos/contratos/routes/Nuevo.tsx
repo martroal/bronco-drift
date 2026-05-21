@@ -5,9 +5,11 @@ import type { User } from '@supabase/supabase-js';
 import { aplicarVariables, TEMPLATES, type Template, type Variable } from '../lib/templates';
 import { crearContrato } from '../lib/queries';
 import { config } from '../config';
+import { useDocTitle } from '@/lib/useDocTitle';
 import PreviewContrato from '../components/PreviewContrato';
 
 export default function Nuevo({ user }: { user: User | null }) {
+  useDocTitle('Nuevo contrato · Firma Digital Simple');
   const navigate = useNavigate();
   const userId = user?.id ?? null;
 
