@@ -68,6 +68,12 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Added (cultura blindada en docs para sobrevivir compacts y nuevas sesiones)
+- **`docs/LESSONS_LEARNED.md`** completado con 17+ lecciones agrupadas en 5 secciones: Setup inicial, Deploy y producción, React/CSS/rendering, Supabase RLS y data, Performance y bundle, UX y producto. Cada lección documenta síntoma, causa raíz, solución aplicada y cómo evitarla. Resuelve la tarea pending #15 que arrastraba desde el inicio del proyecto.
+- **`docs/PROCESS.md`** (nuevo) — proceso operativo completo de armar un módulo: las 5 fases (investigación, DB, build, polish, validación), qué hace Claude en cada una, qué hacés vos, checkpoints, antipatrones a evitar. Documenta las 15 reglas durables (hard rules + soft rules) y la lista de "cosas que nunca hacemos". Es el manual de cómo replicar el éxito del flow.
+- **`PRODUCT.md`** sumó subsección **"Tono en concreto"**: 7+ pares de ejemplos textuales (empty states, CTAs, errores, microcopy de progreso, etc.) mostrando cómo SÍ escribimos vs cómo NO. Bloquea el riesgo de que el tono se pierda en nuevas sesiones o se diluya en SaaS-speak. También documenta el tono entre Claude y el operador en chat.
+- **`CLAUDE.md`** actualizado para referenciar PRODUCT.md y PROCESS.md como lectura inicial de toda sesión nueva.
+
 ### Added (aclaración + DNI estándar argentino en bloque de firma)
 - Bajo cada firma del contrato ahora se renderiza `Aclaración: <nombre completo>` y `DNI/CUIT: <número>`, en formato estándar de contratos argentinos. Aplica en preview, en PDF y en la página pública de firma.
 - Schema: nuevas columnas `parte_a_dni` y `parte_b_dni` en `contratos_documentos` (nullable, no rompe contratos viejos). Migration `006_contratos_dni.sql`.

@@ -179,13 +179,16 @@ Después de la aprobación, el output final se persiste en `research/<nicho>.md`
 
 Todo el estado vivo del proyecto está documentado. Antes de empezar una sesión, leer:
 
+- [PRODUCT.md](./PRODUCT.md) — quiénes somos, audiencia, tono de voz (con ejemplos concretos), anti-references, principios estratégicos.
 - [docs/SELF_CHECK.md](./docs/SELF_CHECK.md) — **lectura obligatoria**. Misión + las 3 preguntas que cada feature debe pasar. Antimensiones. Aprendizaje de Vencet v0.1.
+- [docs/PROCESS.md](./docs/PROCESS.md) — cómo armamos un módulo paso a paso, 5 fases, checkpoints, reglas durables. Es el "cómo" del proyecto.
 - [BACKLOG.md](./BACKLOG.md) — qué falta, ordenado por prioridad. Decisiones tomadas y pendientes.
 - [CHANGELOG.md](./CHANGELOG.md) — qué cambió en cada versión, en `[Unreleased]` lo que aún no se publicó.
 - [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) — stack, estructura, diagrama de DB, decisiones de diseño, restricciones operativas.
+- [docs/DESIGN.md](./DESIGN.md) — sistema visual (colores OKLCH, tipografía, layout, componentes globales).
 - [docs/DEPLOY_LOG.md](./docs/DEPLOY_LOG.md) — registro de deploys a producción, éxitos y fallos.
 - [docs/LESSONS_LEARNED.md](./docs/LESSONS_LEARNED.md) — bugs no-obvios y cómo evitar repetirlos.
-- [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) — workflow para cambios de schema en Supabase.
+- [docs/MIGRATIONS.md](./docs/MIGRATIONS.md) — workflow para cambios de schema en Supabase + registro de aplicadas.
 - `research/<nicho>.md` — output aprobado del Prompt 1 para cada nicho.
 
 ## Recordatorios al inicio de cada sesión

@@ -61,6 +61,64 @@ Una persona que sabe lo que hace y no necesita probarlo.
 
 Confiado pero no arrogante. Cálido pero no servicial. Técnico cuando hace falta serlo, simple cuando puede serlo. Cero entusiasmo forzado.
 
+### Tono en concreto (ejemplos)
+
+Estos pares muestran cómo SÍ escribimos vs cómo NO escribimos. Cuando dudes de una línea de copy, ponela contra estos ejemplos.
+
+**Empty states**
+
+- ✅ "Tu cuaderno está vacío. Empezá agregando tu primer paciente."
+- ❌ "¡Bienvenido! Estamos emocionados de que estés aquí. Para comenzar tu experiencia, agrega tu primer paciente."
+
+**Limitaciones de la app**
+
+- ✅ "Por ahora se guarda en tu navegador. Si querés sincronizar entre dispositivos, creá una cuenta."
+- ❌ "Próximamente: sincronización en la nube. ¡Muy pronto disponible!"
+
+**CTAs**
+
+- ✅ "Crear cuenta gratis"
+- ✅ "Probalo gratis"
+- ❌ "Comenzar mi viaje" / "Get started"
+
+**Confirmaciones**
+
+- ✅ "Firmado. Listo."
+- ✅ "Trato hecho."
+- ❌ "¡Felicitaciones! Has completado exitosamente la firma del documento."
+
+**Mensajes de error**
+
+- ✅ "Email o contraseña incorrectos."
+- ✅ "Necesitamos tu DNI para la aclaración."
+- ❌ "Lo sentimos, parece que algo salió mal. Por favor intenta nuevamente."
+
+**Descripciones de feature**
+
+- ✅ "5 prompts cortos al final de cada sesión. Tomá 3 minutos, no un Word vacío."
+- ❌ "Una experiencia de documentación clínica revolucionaria que potencia tu práctica profesional."
+
+**Microcopy de progreso**
+
+- ✅ "Guardando..."
+- ✅ "Cargando tu cuaderno..."
+- ❌ "Procesando su solicitud, por favor aguarde un momento..."
+
+**Anuncios de cosas que pasan**
+
+- ✅ "Pusheado `a4fa604`. Vercel re-deploya."
+- ❌ "He completado exitosamente todas las tareas que me asignaste y he procedido a desplegar los cambios."
+
+### Tono entre Claude y vos en chat (operativo)
+
+Cuando Claude responde sobre el trabajo del proyecto:
+
+- **Brevedad**: una o dos frases por update, salvo que vos pidas detalle.
+- **No re-narrar lo que hizo el tool**: mostrar el resultado, no la transcripción.
+- **Em dashes prohibidos en copy de UI**: usar `:`, `;`, `,`, `(...)`, `.`. (En el chat operativo está OK porque no llega al usuario final.)
+- **Honestidad sobre lo que no sabe / no puede**: si algo está fuera del alcance del MVP, decirlo claro en vez de inventar workarounds raros.
+- **Cuando hay opciones, listarlas con trade-offs**: tabla o lista numerada. El operador decide, Claude no impone.
+
 ## Anti-references (lo que NO somos)
 
 Cosas concretas que rechazamos:
