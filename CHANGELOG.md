@@ -68,6 +68,26 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Added (Módulo Firma Digital Simple — para freelancers y pymes)
+- **Nuevo módulo `/contratos`** con estilo deliberadamente distinto: **light mode local** (papel cremoso `#fdfaf3`), serif display **Fraunces** (Google Fonts) con personalidad editorial, paleta acento lacre cera `#7c2d12` (orange-900). Visualmente NADA en común con Freud (dark + cuero + Bitter) ni con la plataforma. Cuando entrás se siente otro lugar.
+- `research/contratos.md` con investigación, marco legal Ley 25.506, gap real en LATAM, funcionalidades aprobadas, branding aprobado.
+- `migrations/005_contratos_documentos.sql` con una sola tabla `contratos_documentos` (dos firmantes inline, link_firma_token capability-based, hash_documento sha256). RLS: owner full + lectura/update público SOLO para docs en estado `enviado` con token presente.
+- 4 templates argentinos en español natural: Freelance, NDA, Servicios profesionales recurrentes, Locación temporal. En `lib/templates.ts` con sistema de variables `{{key}}`.
+- Páginas:
+  - `Lista.tsx`: listado de contratos con estado coloreado (borrador / esperando firma / firmado / cancelado).
+  - `Nuevo.tsx`: selector de template + form de variables con preview vivo a la derecha.
+  - `Detalle.tsx`: preview + acciones (Firmar yo, Generar link de firma, Copiar link, Mandar por WhatsApp, Descargar PDF) + audit trail.
+  - `Firmar.tsx`: página pública sin login. La otra parte abre por token, ve el contrato, completa nombre + email + firma (canvas o tipeo), queda registrada con IP + fecha + user-agent + hash.
+- Componentes: `PreviewContrato` (Fraunces serif renderizado del markdown), `FirmaCanvas` (toggle dibujo/tipeo con react-signature-canvas), `AuditTrail` (hash + fechas + IPs).
+- `lib/hash.ts`: SHA-256 via SubtleCrypto nativa + obtenerIPPublica via ipify.org + generarToken UUID v4.
+- `lib/pdf.ts`: generador PDF cliente con html2pdf.js a A4 portrait.
+- Storage local + Supabase + migración automática (sigue las 3 reglas durables).
+- **Tensión local-first explicada**: borradores funcionan sin login en localStorage, pero el envío de link requiere cuenta porque la otra parte tiene que poder leer el doc desde otro browser. Decisión consciente, documentada en `research/contratos.md` y en el onboarding step 4.
+- Onboarding de 4 pasos.
+- Dependencias nuevas: `react-markdown`, `react-signature-canvas`, `html2pdf.js`, `@types/react-signature-canvas` (dev).
+- Fraunces sumada a Google Fonts en `index.html`.
+- Bundle: 2049 modules, 1.67 MB raw, 486 KB gzip. **Lazy loading subió a urgente en BACKLOG**.
+
 ### Changed (módulos en home muestran audiencia)
 - Cada `config.ts` de módulo sumó campo `audiencia` (plural en minúscula: "psicólogos", "contadores"). La home portfolio en `/` lee los configs directamente (sin hardcodear) y muestra cada módulo como **"Freud · para psicólogos"** con el tagline debajo.
 - Regla durable agregada al Prompt 2 del CLAUDE.md: cada nuevo módulo declara `nombre`, `audiencia`, `tagline`, `acento`, `acentoSoft`, `acentoSoftBorder` en su `config.ts`. El portfolio los descubre automáticamente.

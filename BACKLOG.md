@@ -15,7 +15,7 @@ Ordenado por prioridad. Movés items entre secciones a medida que avanza el proy
 ## Diferidos (no urgentes)
 
 - [ ] **Vencet (contadores) — repensar**: el módulo actual queda como caso de estudio en `src/proyectos/contadores/` (ver `docs/SELF_CHECK.md` para el aprendizaje). Si se retoma, arrancar de cero el Prompt 1 con validación de contador real.
-- [ ] **Lazy loading por ruta** (`<Route lazy={...} />`). Necesario a partir del módulo 3 para que el bundle inicial no crezca linealmente.
+- [ ] **Lazy loading por ruta** (`<Route lazy={...} />`). **Ahora urgente**: con Firma Digital Simple (html2pdf.js incluido) el bundle saltó a 1.67MB / 486KB gzip. Sin lazy loading, la home tarda mucho más en cargar.
 - [ ] **Tests mínimos por módulo** (Vitest + 1 test E2E por feature crítica). Cuando haya 2+ módulos vivos para evitar regresiones cruzadas.
 - [ ] **Privacy policy y términos** (legal argentina + GDPR-lite para Google). Antes del primer usuario real.
 - [ ] **Decidir nombre real** (reemplazar codename "Bronco Drift"). Antes del primer push de marketing.

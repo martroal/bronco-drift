@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { config as freudConfig } from '@/proyectos/psicologos/config';
 import { config as vencetConfig } from '@/proyectos/contadores/config';
+import { config as contratosConfig } from '@/proyectos/contratos/config';
 
 type Modulo = {
   slug: string;
@@ -20,6 +21,14 @@ const modulos: Modulo[] = [
     tagline: freudConfig.tagline,
     estado: 'live',
     href: '/freud',
+  },
+  {
+    slug: 'contratos',
+    nombre: contratosConfig.nombre,
+    audiencia: contratosConfig.audiencia,
+    tagline: contratosConfig.tagline,
+    estado: 'live',
+    href: '/contratos',
   },
   {
     slug: 'contadores',

@@ -4,6 +4,7 @@ import Home from './routes/Home';
 import ProjectModule from './routes/ProjectModule';
 import ContadoresApp from './proyectos/contadores/App';
 import FreudApp from './proyectos/psicologos/App';
+import ContratosApp from './proyectos/contratos/App';
 
 export default function App() {
   return (
@@ -13,10 +14,10 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/proyectos/:slug" element={<ProjectModule />} />
 
-        {/* Módulos: entrada directa a la app, sin landing.
-            Cada módulo maneja sus rutas internas con paths relativos. */}
+        {/* Módulos: entrada directa a la app, sin landing. */}
         <Route path="/contadores/*" element={<ContadoresApp />} />
         <Route path="/freud/*" element={<FreudApp />} />
+        <Route path="/contratos/*" element={<ContratosApp />} />
       </Route>
     </Routes>
   );
