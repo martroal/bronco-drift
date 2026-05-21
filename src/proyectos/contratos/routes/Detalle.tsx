@@ -125,6 +125,18 @@ export default function Detalle({ user }: { user: User | null }) {
 
   async function descargarPDF() {
     if (!previewRef.current || !contrato) return;
+
+    // Avisar si quedan variables {{x}} sin reemplazar
+    const sinReemplazar = Array.from(contenidoMd.matchAll(/\{\{(\w+)\}\}/g)).map((m) => m[1]);
+    const variablesUnicas = Array.from(new Set(sinReemplazar));
+    if (variablesUnicas.length > 0) {
+      const lista = variablesUnicas.join(', ');
+      const proceder = window.confirm(
+        `El contrato tiene ${variablesUnicas.length} variable(s) sin completar: ${lista}.\n\n¿Generar el PDF igual? Tip: editá el contrato y completá los campos antes de exportarlo.`,
+      );
+      if (!proceder) return;
+    }
+
     const filename = `${slugify(contrato.titulo)}.pdf`;
     await generarPDF(previewRef.current, filename);
   }

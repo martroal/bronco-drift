@@ -68,6 +68,11 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Fixed (3 bugs del PDF de contratos)
+- **Página en blanco inicial**: `pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }` con `legacy` inyectaba una página vacía al inicio del PDF. Sacamos `legacy`. Quedan `css` y `avoid-all`, que cubren los breaks reales sin ese efecto fantasma.
+- **Palabras pegadas en headings** ("Propiedadintelectual", "Soluciónlecontroversias"): `html2canvas` rasterizaba ANTES de que las fonts Fraunces/Geist terminaran de cargar, cayendo a fallback con kerning agresivo que se comía espacios. Ahora `generarPDF` espera `document.fonts.ready` + un tick para layout estable, y `html2canvas.onclone` también espera las fonts dentro del clon. Agregamos `letterRendering: true` para rasterización letter-by-letter.
+- **Variables sin reemplazar exportadas a PDF**: si el usuario hace clic en "Descargar PDF" sin completar las `{{variables}}` del template, ahora aparece un `confirm` listando las variables faltantes. Puede generar igual (para revisar el formato) o cancelar e ir a editar el contrato.
+
 ### Fixed (8 fixes del audit /contratos)
 - **C1 — Rutas públicas standalone limpias**: nuevo helper `src/lib/publicRoutes.ts` con regex de rutas tipo `/contratos/firmar/:token`. BroncoHeader y AuthBanner detectan y se ocultan en esas rutas. La página de firma queda sin el shell de la plataforma.
 - **C2 — Lazy loading por módulo + dynamic import de html2pdf**: cada módulo (`/contadores/*`, `/freud/*`, `/contratos/*`) en su chunk separado vía `React.lazy` + `Suspense`. `html2pdf.js` se importa dinámicamente solo cuando se llama a `generarPDF`. Bundle inicial pasó de **486 KB gzip → 119 KB gzip** (~4x más rápido en mobile). html2pdf (285 KB gzip) solo se descarga cuando el usuario hace clic en descargar PDF.
