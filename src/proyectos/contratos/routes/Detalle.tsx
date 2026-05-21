@@ -25,6 +25,8 @@ export default function Detalle({ user }: { user: User | null }) {
   const [enviando, setEnviando] = useState(false);
   const [linkCopiado, setLinkCopiado] = useState(false);
   const [confirmarBorrar, setConfirmarBorrar] = useState(false);
+  const [miNombre, setMiNombre] = useState('');
+  const [miDNI, setMiDNI] = useState('');
 
   const previewRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,13 +79,22 @@ export default function Detalle({ user }: { user: User | null }) {
 
   async function firmarYo(data: string, tipo: 'dibujo' | 'tipeo') {
     if (!contrato) return;
+    if (!miNombre.trim()) {
+      setError('Necesitamos tu nombre completo para la aclaración.');
+      return;
+    }
+    if (!miDNI.trim()) {
+      setError('Necesitamos tu DNI/CUIT para la aclaración.');
+      return;
+    }
     setEnviando(true);
     setError(null);
     try {
       const ip = await obtenerIPPublica();
       const ua = typeof navigator !== 'undefined' ? navigator.userAgent : null;
       const actualizado = await actualizarContrato(userId, contrato.id, {
-        parte_a_nombre: tipo === 'tipeo' ? data : (contrato.parte_a_nombre ?? 'Parte A'),
+        parte_a_nombre: miNombre.trim(),
+        parte_a_dni: miDNI.trim(),
         parte_a_firma_data: data,
         parte_a_firma_tipo: tipo,
         parte_a_firmado_at: new Date().toISOString(),
@@ -294,11 +305,36 @@ export default function Detalle({ user }: { user: User | null }) {
                 </button>
               )}
               {firmaAbierta && (
-                <div className="mt-3">
+                <div className="mt-3 space-y-3">
+                  <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: config.tinta }}>
+                      Tu nombre completo
+                    </label>
+                    <input
+                      value={miNombre}
+                      onChange={(e) => setMiNombre(e.target.value)}
+                      placeholder="María López"
+                      className="w-full rounded-md border px-3 py-2 text-sm"
+                      style={{ backgroundColor: '#ffffff', borderColor: config.borde, color: config.tinta }}
+                      autoFocus
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium mb-1" style={{ color: config.tinta }}>
+                      DNI o CUIT
+                    </label>
+                    <input
+                      value={miDNI}
+                      onChange={(e) => setMiDNI(e.target.value)}
+                      placeholder="22.345.678 o 27-22345678-9"
+                      className="w-full rounded-md border px-3 py-2 text-sm"
+                      style={{ backgroundColor: '#ffffff', borderColor: config.borde, color: config.tinta }}
+                    />
+                  </div>
                   <FirmaCanvas
                     onConfirmar={firmarYo}
                     disabled={enviando}
-                    nombreSugerido={contrato.parte_a_nombre ?? ''}
+                    nombreSugerido={miNombre || contrato.parte_a_nombre || ''}
                   />
                 </div>
               )}

@@ -114,6 +114,7 @@ export async function firmarComoParteB(
   token: string,
   payload: {
     nombre: string;
+    dni: string;
     email: string | null;
     firma_data: string;
     firma_tipo: 'dibujo' | 'tipeo';
@@ -125,6 +126,7 @@ export async function firmarComoParteB(
     .from('contratos_documentos')
     .update({
       parte_b_nombre: payload.nombre,
+      parte_b_dni: payload.dni,
       parte_b_email: payload.email,
       parte_b_firma_data: payload.firma_data,
       parte_b_firma_tipo: payload.firma_tipo,

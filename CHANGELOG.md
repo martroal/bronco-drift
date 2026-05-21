@@ -68,6 +68,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Added (aclaración + DNI estándar argentino en bloque de firma)
+- Bajo cada firma del contrato ahora se renderiza `Aclaración: <nombre completo>` y `DNI/CUIT: <número>`, en formato estándar de contratos argentinos. Aplica en preview, en PDF y en la página pública de firma.
+- Schema: nuevas columnas `parte_a_dni` y `parte_b_dni` en `contratos_documentos` (nullable, no rompe contratos viejos). Migration `006_contratos_dni.sql`.
+- UX firma propia (Detalle): inputs de "Nombre completo" y "DNI/CUIT" requeridos antes del canvas. Error inline si falta alguno.
+- UX firma parte B (Firmar.tsx página pública): el form ahora pide Nombre + DNI/CUIT (requeridos) + Email (opcional). Layout grid 2 columnas en desktop, stack en mobile.
+- `firmarComoParteB` ahora acepta `dni` en el payload y lo persiste.
+
 ### Changed (revert: variables sin completar quedan visibles en el PDF)
 - Removido el confirm dialog antes de generar PDF. Las variables `{{x}}` sin reemplazar se exportan tal cual y actúan como señal visual de qué campos quedan por completar (decisión consciente del usuario).
 

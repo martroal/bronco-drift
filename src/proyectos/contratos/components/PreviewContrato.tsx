@@ -111,6 +111,7 @@ const PreviewContrato = forwardRef<HTMLDivElement, Props>(function PreviewContra
           <BloqueFirma
             label="Parte A"
             nombre={contrato.parte_a_nombre}
+            dni={contrato.parte_a_dni}
             firma_data={contrato.parte_a_firma_data}
             firma_tipo={contrato.parte_a_firma_tipo}
             fecha={contrato.parte_a_firmado_at}
@@ -118,6 +119,7 @@ const PreviewContrato = forwardRef<HTMLDivElement, Props>(function PreviewContra
           <BloqueFirma
             label="Parte B"
             nombre={contrato.parte_b_nombre}
+            dni={contrato.parte_b_dni}
             firma_data={contrato.parte_b_firma_data}
             firma_tipo={contrato.parte_b_firma_tipo}
             fecha={contrato.parte_b_firmado_at}
@@ -150,12 +152,14 @@ const PreviewContrato = forwardRef<HTMLDivElement, Props>(function PreviewContra
 function BloqueFirma({
   label,
   nombre,
+  dni,
   firma_data,
   firma_tipo,
   fecha,
 }: {
   label: string;
   nombre: string | null;
+  dni: string | null;
   firma_data: string | null;
   firma_tipo: 'dibujo' | 'tipeo' | null;
   fecha: string | null;
@@ -204,14 +208,23 @@ function BloqueFirma({
         )}
       </div>
 
-      <p style={{ fontSize: '12px', fontWeight: 500 }}>{nombre ?? '—'}</p>
+      {/* Aclaración + DNI: estándar argentino bajo la línea de firma */}
+      <p style={{ fontSize: '11px', color: config.tintaSuave, marginBottom: '2px' }}>
+        <span style={{ color: config.tintaMuyTenue }}>Aclaración:</span>{' '}
+        <span style={{ color: config.tinta, fontWeight: 500 }}>{nombre ?? '—'}</span>
+      </p>
+      <p style={{ fontSize: '11px', color: config.tintaSuave, marginBottom: '2px' }}>
+        <span style={{ color: config.tintaMuyTenue }}>DNI/CUIT:</span>{' '}
+        <span style={{ color: config.tinta, fontFamily: 'Geist Mono, monospace' }}>{dni ?? '—'}</span>
+      </p>
+
       {fecha && (
         <p
           style={{
             fontSize: '10px',
-            color: config.tintaSuave,
+            color: config.tintaMuyTenue,
             fontFamily: 'Geist Mono, monospace',
-            marginTop: '2px',
+            marginTop: '6px',
           }}
         >
           {new Date(fecha).toLocaleString('es-AR', {

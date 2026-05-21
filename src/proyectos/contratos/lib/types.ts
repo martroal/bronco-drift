@@ -11,6 +11,7 @@ export type Contrato = {
   estado: EstadoContrato;
 
   parte_a_nombre: string | null;
+  parte_a_dni: string | null;
   parte_a_email: string | null;
   parte_a_firma_data: string | null;
   parte_a_firma_tipo: FirmaTipo | null;
@@ -19,6 +20,7 @@ export type Contrato = {
   parte_a_user_agent: string | null;
 
   parte_b_nombre: string | null;
+  parte_b_dni: string | null;
   parte_b_email: string | null;
   parte_b_firma_data: string | null;
   parte_b_firma_tipo: FirmaTipo | null;

@@ -21,6 +21,7 @@ export default function Firmar() {
   const [error, setError] = useState<string | null>(null);
 
   const [nombre, setNombre] = useState('');
+  const [dni, setDni] = useState('');
   const [email, setEmail] = useState('');
   const [firmando, setFirmando] = useState(false);
   const [firmado, setFirmado] = useState(false);
@@ -55,7 +56,11 @@ export default function Firmar() {
   async function firmar(firma_data: string, firma_tipo: 'dibujo' | 'tipeo') {
     if (!token || !contrato) return;
     if (!nombre.trim()) {
-      setError('Necesitamos tu nombre para registrar la firma.');
+      setError('Necesitamos tu nombre completo para la aclaración.');
+      return;
+    }
+    if (!dni.trim()) {
+      setError('Necesitamos tu DNI o CUIT para la aclaración.');
       return;
     }
     setFirmando(true);
@@ -65,6 +70,7 @@ export default function Firmar() {
       const ua = typeof navigator !== 'undefined' ? navigator.userAgent : '';
       await firmarComoParteB(token, {
         nombre: nombre.trim(),
+        dni: dni.trim(),
         email: email.trim() || null,
         firma_data,
         firma_tipo,
@@ -175,6 +181,18 @@ export default function Firmar() {
             />
           </div>
           <div>
+            <label className="block text-xs font-medium mb-1" style={{ color: config.tinta }}>
+              Tu DNI o CUIT
+            </label>
+            <input
+              value={dni}
+              onChange={(e) => setDni(e.target.value)}
+              placeholder="22.345.678 o 27-22345678-9"
+              className="w-full rounded-md border px-3 py-2 text-sm"
+              style={{ backgroundColor: '#ffffff', borderColor: config.borde, color: config.tinta }}
+            />
+          </div>
+          <div className="sm:col-span-2">
             <label className="block text-xs font-medium mb-1" style={{ color: config.tinta }}>
               Tu email <span style={{ color: config.tintaMuyTenue }}>(opcional)</span>
             </label>
