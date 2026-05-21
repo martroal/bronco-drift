@@ -62,6 +62,7 @@ export default function ContratosApp() {
           <Route index element={<Lista user={user} />} />
           <Route path="nuevo" element={<Nuevo user={user} />} />
           <Route path="firmar/:token" element={<Firmar />} />
+          <Route path=":id/editar" element={<Nuevo user={user} />} />
           <Route path=":id" element={<Detalle user={user} />} />
         </Routes>
       </div>

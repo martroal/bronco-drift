@@ -68,6 +68,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Changed (revert: variables sin completar quedan visibles en el PDF)
+- Removido el confirm dialog antes de generar PDF. Las variables `{{x}}` sin reemplazar se exportan tal cual y actúan como señal visual de qué campos quedan por completar (decisión consciente del usuario).
+
+### Added (editar borrador + crear versión nueva)
+- **Botón "Editar"** en `Detalle.tsx` cuando estado === 'borrador'. Linkea a `/contratos/:id/editar`. `Nuevo.tsx` ahora soporta modo edición: detecta `useParams.id`, carga el contrato existente, pre-llena título y variables, y al guardar hace `UPDATE` en lugar de `INSERT`. Si el contrato tenía firma del creador (`parte_a_firma_data`), se invalida al guardar porque el contenido cambió. Warning visible en el form al editar un contrato con firma.
+- **Botón "Crear versión nueva"** cuando estado !== 'borrador' (enviado, firmado, cancelado). Duplica el contrato como nuevo borrador con título `(v2)` (o `(vN+1)` si ya había versión previa). El original queda intacto preservando audit trail. Usuario decide qué hacer con la versión vieja (mantenerla como histórico, cancelarla, etc.).
+- Nueva ruta `/contratos/:id/editar` montada en `App.tsx` del módulo.
+
 ### Fixed (3 bugs del PDF de contratos)
 - **Página en blanco inicial**: `pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }` con `legacy` inyectaba una página vacía al inicio del PDF. Sacamos `legacy`. Quedan `css` y `avoid-all`, que cubren los breaks reales sin ese efecto fantasma.
 - **Palabras pegadas en headings** ("Propiedadintelectual", "Soluciónlecontroversias"): `html2canvas` rasterizaba ANTES de que las fonts Fraunces/Geist terminaran de cargar, cayendo a fallback con kerning agresivo que se comía espacios. Ahora `generarPDF` espera `document.fonts.ready` + un tick para layout estable, y `html2canvas.onclone` también espera las fonts dentro del clon. Agregamos `letterRendering: true` para rasterización letter-by-letter.

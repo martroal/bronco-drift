@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Copy, Download, Send, Trash2, Edit, Check } from 'lucide-react';
+import { ArrowLeft, Copy, Download, Send, Trash2, Edit, Check, FilePlus2 } from 'lucide-react';
 import type { User } from '@supabase/supabase-js';
-import { actualizarContrato, eliminarContrato, obtenerContrato, type Contrato } from '../lib/queries';
+import { actualizarContrato, crearContrato, eliminarContrato, obtenerContrato, type Contrato } from '../lib/queries';
 import { aplicarVariables, obtenerTemplate } from '../lib/templates';
 import { generarToken, obtenerIPPublica, sha256 } from '../lib/hash';
 import { generarPDF } from '../lib/pdf';
@@ -125,18 +125,8 @@ export default function Detalle({ user }: { user: User | null }) {
 
   async function descargarPDF() {
     if (!previewRef.current || !contrato) return;
-
-    // Avisar si quedan variables {{x}} sin reemplazar
-    const sinReemplazar = Array.from(contenidoMd.matchAll(/\{\{(\w+)\}\}/g)).map((m) => m[1]);
-    const variablesUnicas = Array.from(new Set(sinReemplazar));
-    if (variablesUnicas.length > 0) {
-      const lista = variablesUnicas.join(', ');
-      const proceder = window.confirm(
-        `El contrato tiene ${variablesUnicas.length} variable(s) sin completar: ${lista}.\n\n¿Generar el PDF igual? Tip: editá el contrato y completá los campos antes de exportarlo.`,
-      );
-      if (!proceder) return;
-    }
-
+    // Las variables `{{x}}` sin reemplazar se exportan tal cual: actúan como
+    // señal visual para el usuario de qué campos quedan por completar.
     const filename = `${slugify(contrato.titulo)}.pdf`;
     await generarPDF(previewRef.current, filename);
   }
@@ -166,6 +156,40 @@ export default function Detalle({ user }: { user: User | null }) {
     }
   }
 
+  /**
+   * Crea una copia del contrato como nuevo borrador (v2, v3...).
+   * El original queda intacto (audit trail no se rompe).
+   */
+  async function crearVersion() {
+    if (!contrato) return;
+    setEnviando(true);
+    setError(null);
+    try {
+      // Detectar si ya tiene sufijo (vN) y aumentar; sino agregar (v2).
+      const matchVersion = contrato.titulo.match(/^(.*?)\s*\(v(\d+)\)\s*$/);
+      let nuevoTitulo: string;
+      if (matchVersion) {
+        const base = matchVersion[1];
+        const num = parseInt(matchVersion[2], 10) + 1;
+        nuevoTitulo = `${base} (v${num})`;
+      } else {
+        nuevoTitulo = `${contrato.titulo} (v2)`;
+      }
+
+      const nuevo = await crearContrato(userId, {
+        titulo: nuevoTitulo,
+        template_slug: contrato.template_slug,
+        contenido_md: contrato.contenido_md,
+        variables: contrato.variables,
+      });
+      navigate(`/contratos/${nuevo.id}`);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setEnviando(false);
+    }
+  }
+
   /* -------------------- render -------------------- */
 
   return (
@@ -190,14 +214,37 @@ export default function Detalle({ user }: { user: User | null }) {
           <EstadoBadge estado={contrato.estado} />
         </div>
 
-        <button
-          onClick={descargarPDF}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md border hover:bg-white"
-          style={{ borderColor: config.borde, color: config.tinta }}
-        >
-          <Download size={13} />
-          Descargar PDF
-        </button>
+        <div className="flex items-center gap-2">
+          {contrato.estado === 'borrador' ? (
+            <Link
+              to={`/contratos/${contrato.id}/editar`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md border hover:bg-white"
+              style={{ borderColor: config.borde, color: config.tinta }}
+            >
+              <Edit size={13} />
+              Editar
+            </Link>
+          ) : (
+            <button
+              onClick={crearVersion}
+              disabled={enviando}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md border hover:bg-white disabled:opacity-50"
+              style={{ borderColor: config.borde, color: config.tinta }}
+              title="El original queda intacto. Se crea una nueva versión como borrador."
+            >
+              <FilePlus2 size={13} />
+              Crear versión nueva
+            </button>
+          )}
+          <button
+            onClick={descargarPDF}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-md border hover:bg-white"
+            style={{ borderColor: config.borde, color: config.tinta }}
+          >
+            <Download size={13} />
+            Descargar PDF
+          </button>
+        </div>
       </header>
 
       {error && (
