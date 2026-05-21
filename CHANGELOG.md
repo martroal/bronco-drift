@@ -68,6 +68,13 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/).
 - `Landing.tsx` y `App.tsx` de Vencet ahora son módulos "libres" debajo del shell: tienen su propio subheader tinted con el acento del nicho, sin duplicar AuthMenu ni AuthBanner. Esto permite que otros módulos a futuro puedan no tener header, tener barra de navegación inferior, o el layout que quieran.
 - Home portfolio muestra Vencet con estado **pausado** (no live) reflejando la decisión del self-check.
 
+### Added (impeccable teach: contexto formal)
+- `PRODUCT.md`: register (brand + product mix), misión, audiencia en dos capas, tono de voz, anti-references estéticas y de UX, principios estratégicos.
+- `DESIGN.md`: sistema visual completo. Color en OKLCH con neutrales tinteados al calor, color strategy por contexto (Restrained/Committed). Tipografía pair sans + mono: Geist + Geist Mono cargadas desde Google Fonts. Bitter como serif opcional por módulo (Freud ya la usa). Escala tipográfica 1.25x, layout containers por contexto, patrones de modal scrolleable, motion ease-out exponencial, theme dark default.
+- `index.html` precarga las 3 familias de fonts.
+- `src/index.css` aplica Geist como font-family base, Geist Mono para code/kbd/pre/samp, con features cv11/ss01/ss03 activadas.
+- `tailwind.config.js` extiende fontFamily para que `font-sans`, `font-mono`, `font-serif` resuelvan al stack Geist/Geist Mono/Bitter.
+
 ### Added (misión y self-check)
 - **`docs/SELF_CHECK.md`** con la misión reformulada (funcional, hermosa, gratis — el video es secundario) y las 3 preguntas que toda feature debe pasar antes de implementarse (valor real, funcional end-to-end, hermosa). Incluye antimensiones explícitas y el aprendizaje de Vencet v0.1 como caso de estudio.
 - `CLAUDE.md` actualizado para referenciar SELF_CHECK como lectura obligatoria al inicio de cada sesión. Prompts 1 y 2 ahora exigen pasar el self-check antes de proponer alcance o tipear código.
